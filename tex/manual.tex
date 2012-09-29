@@ -11,12 +11,25 @@
 \usepackage{geometry}
 
 \geometry{verbose,landscape,letterpaper,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\newcommand{\codigofuente}[1]{
+\verbatiminput{#1}
+\dotfill
+}
+
 
 \begin{document}
 
 \title{Resumen de algoritmos para maratones de programación}
 \author{Diego Alejandro Martínez - Manuel Felipe Pineda}
 \maketitle
+
+\tableofcontents
+\lstloadlanguages{C++,Java}
+
+\newpage 
+\section{Plantilla}
+\codigofuente{../src/template.ext}
+
 
 
 \end{document}
