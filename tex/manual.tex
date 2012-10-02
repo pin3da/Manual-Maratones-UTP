@@ -22,7 +22,7 @@
 \begin{document}
 
 \title{Resumen de algoritmos para maratones de programación}
-\author{Diego Alejandro Martínez - Manuel Felipe Pineda}
+\author{Manuel Felipe Pineda - Diego Alejandro Martínez}
 \maketitle
 
 \tableofcontents
@@ -37,7 +37,31 @@
 %===============================================%
 \section{Grafos}
 
+\subsection{Depth First Search}
+
+Es un algoritmo para recorrer o buscar en un grafo. Empieza visitando la raiz y luego explora 
+a fondo cada rama antes de hacer el backtraing.\\
+\\
+Complejidad $O(|V|+|E|)$
+
+\codigofuente{../src/dfs.${EXT}}
+
+\subsection{Breadth First Search}
+
+Es un algoritmo de búsqueda que empieza en la raíz y explora todos los nodos vecinos. Luego para cada
+vecino repite el proceso hasta encontrar la meta.\\
+Complejidad $O(|V|+|E|)$
+
+\codigofuente{../src/bfs.${EXT}}
+
 \subsection{Dijkstra}
+
+Calcula la ruta más corta a todos los nodos desde un origen.\\
+Todas las aristas deben ser NO negativas, en ese caso usar Bellman-ford.\\
+Complejidad $O(E\ log V)$
+
+\codigofuente{../src/dijkstra.${EXT}}
+
 
 \subsection{Bellman-Ford}
 
@@ -48,10 +72,6 @@
 \subsection{Minimum Spanning Tree: Kruskal}
 
 \subsection{Minimum Spanning Tree: Prim}
-
-\subsection{Breadth First Search}
-
-\subsection{Depth First Search}
 
 \subsection{Strongly Connected Components}
 
@@ -73,9 +93,14 @@
 Colección de códigos útiles para aritmética modular\\
 \codigofuente{../src/euclidean.${EXT}}
 
+\subsection{Mayor exponente de un primo que divide a n!}
+\codigofuente{../src/pow_div.${EXT}}
+
+
 \subsection{Potencia modular}
 
 \subsection{Criba de Eratóstenes}
+
 
 
 %===============================================%
@@ -141,6 +166,9 @@ Colección de códigos útiles para aritmética modular\\
 \section{Miseláneo}
 
 \subsection {Bitwise operations}
+Operaciones útiles con bits.
+
+\codigofuente{../src/bitwise.${EXT}}
 
 
 
