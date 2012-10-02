@@ -10,9 +10,11 @@
 
 using namespace std;
 
+#define all(x) x.begin(),x.end()
 #define rep(i,a,b) for(int i=a;i<b;i++)
 #define REP(i,n) rep(i,0,n)
-#define foreach(x, v) for (typeof (v).begin() x = (v).begin(); x != (v).end(); ++x)
+#define foreach(x, v) for (typeof (v).begin() x = (v).begin(); \
+x != (v).end(); ++x)
 #define D(x) cout << #x " = " << x << endl;
 
 typedef long long int lld;

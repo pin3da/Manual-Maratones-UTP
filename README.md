@@ -6,16 +6,14 @@ Guía de algoritmos para maratones de pogramación - Universidad tecnológica de
 ### Para usar
  - Se puede compilar con el lenguaje que se prefiera (c++ o java)
  
-ir al directorio src y ejecutar ext LENGUAJE ext
+ir al directorio tex y ejecutar dependiendo del lenguaje deseado.
 
-	cd src
-	./ext cpp ext 
-	./ext java ext
+	$ cd tex/
+	$ export EXT=java 
+	$ export EXT=cpp
+	////Solo una de las anteriores.
+	$ pdflatex manual.tex
 
-luego ir a tex y compilar la fuente en latex
-
-	pdflatex manual.tex
-	
 Disfrutar !
 
 
