@@ -97,5 +97,3 @@ void linear_diophantine (int a, int b, int c, int &x, int &y) {
     y = (c - a * x) / b;
   }
 }
-
- 
