@@ -69,7 +69,8 @@ pii chinese_remainder_theorem (int x, int a, int y, int b) {
   int d = extended_euclid (x, y, s, t);
   if (a % d != b % d)
     return make_pair (0, -1);
-  return make_pair (mod (s * b * x + t * a * y, x * y) / d, x * y / d);
+  return make_pair \
+  (mod (s * b * x + t * a * y, x * y) / d, x * y / d);
 }
 
 // Chinese remainder theorem: find z such that
@@ -80,7 +81,8 @@ pii chinese_remainder_theorem (int x, int a, int y, int b) {
 pii chinese_remainder_theorem (const vi & x, const vi & a) {
   pii ret = make_pair (a[0], x[0]);
   for (int i = 1; i < x.size (); i++) {
-    ret = chinese_remainder_theorem (ret.first, ret.second, x[i], a[i]);
+    ret = chinese_remainder_theorem \
+    (ret.first, ret.second, x[i], a[i]);
     if (ret.second == -1) break;
   }
   return ret;
