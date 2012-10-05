@@ -65,14 +65,14 @@ Complejidad $O(E\ log V)$
 
 \subsection{Bellman-Ford}
 
-The Bellman–Ford algorithm computes single-source shortest paths in a weighted digraph. For graphs with\\
-only non-negative edge weights, the faster Dijkstra's algorithm also solves the problem. Thus, Bellman–Ford\\
-is used primarily for graphs with negative edge weights. The algorithm is named after its developers, Richard\\
+The Bellman–Ford algorithm computes single-source shortest paths in a weighted digraph. For graphs with
+only non-negative edge weights, the faster Dijkstra's algorithm also solves the problem. Thus, Bellman–Ford
+is used primarily for graphs with negative edge weights. The algorithm is named after its developers, Richard
 Bellman and Lester Ford, Jr.
 
-If a graph contains a "negative cycle", i.e., a cycle whose edges sum to a negative value, then walks of\\
-arbitrarily low weight can be constructed, i.e., there can be no shortest path. Bellman-Ford can detect\\
-negative cycles and report their existence, but it cannot produce a correct answer if a negative cycle is\\
+If a graph contains a "negative cycle", i.e., a cycle whose edges sum to a negative value, then walks of
+arbitrarily low weight can be constructed, i.e., there can be no shortest path. Bellman-Ford can detect
+negative cycles and report their existence, but it cannot produce a correct answer if a negative cycle is
 reachable from the source.
 
 Para solucionar el longest path, simplemente se aplica bellman-ford con los pesos de los caminos negativos.
@@ -104,6 +104,24 @@ procedure BellmanFord(list vertices, list edges, vertex source)
        if u.distance + uv.weight < v.distance:
            error "Graph contains a negative-weight cycle"
 
+
+\subsection{Edge disjoint shortest paths}
+
+Edge disjoint shortest pair algorithm is an algorithm in computer network routing. The algorithm 
+is used for generating the shortest pair of edge disjoint paths between a given pair of vertices as follows:
+
+Run the shortest pair algorithm for the given pair of vertices
+
+Replace each edge of the shortest path (equivalent to two oppositely directed arcs) by a single arc directed 
+towards the source vertex
+
+Make the length of each of the above arcs negative
+
+Run the shortest path algorithm (Note: the algorithm should accept negative costs)
+
+Erase the overlapping edges of the two paths found, and reverse the direction of the remaining arcs on the 
+first shortest path such that each arc on it is directed towards the sink vertex now. The desired pair of 
+paths results.
 
 \subsection{Floyd-Warshall}
 
