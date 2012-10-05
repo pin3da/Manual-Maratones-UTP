@@ -31,7 +31,7 @@
 %===============================================%
 \section{Plantilla}
 
-\codigofuente{../src/template.${EXT}}
+\codigofuente{../src/template.${EXT}}%$
 
 %===============================================%
 \section{Grafos}
@@ -43,7 +43,7 @@ a fondo cada rama antes de hacer el backtraing.\\
 \\
 Complejidad $O(|V|+|E|)$
 
-\codigofuente{../src/graphs/dfs.${EXT}}
+\codigofuente{../src/graphs/dfs.${EXT}}%$
 
 \subsection{Breadth First Search}
 
@@ -51,7 +51,7 @@ Es un algoritmo de búsqueda que empieza en la raíz y explora todos los nodos v
 vecino repite el proceso hasta encontrar la meta.\\
 Complejidad $O(|V|+|E|)$
 
-\codigofuente{../src/graphs/bfs.${EXT}}
+\codigofuente{../src/graphs/bfs.${EXT}}%$
 
 \subsection{Shortest path problem}
 
@@ -65,21 +65,28 @@ Calcula la ruta más corta a todos los nodos desde un origen.\\
 Todas las aristas deben ser NO negativas, en ese caso usar Bellman-ford.\\
 Complejidad $O(E\ log V)$
 
-\codigofuente{../src/graphs/dijkstra.${EXT}}
+\codigofuente{../src/graphs/dijkstra.${EXT}}%$
 
 
 \subsubsection{Bellman-Ford}
+Este algoritmo calcula la ruta más corta en un grafo dirigido, en el cual el peso de las aristas puede 
+ser positivo o negativo. Para grafos con pesos NO-negativos, el algoritmo de Dijkstra resuelve más
+rápido este problema.\\
 
-The Bellman–Ford algorithm computes single-source shortest paths in a weighted digraph. For graphs with
-only non-negative edge weights, the faster Dijkstra's algorithm also solves the problem. Thus, Bellman–Ford
-is used primarily for graphs with negative edge weights. The algorithm is named after its developers, Richard
-Bellman and Lester Ford, Jr.\\
+%The Bellman–Ford algorithm computes single-source shortest paths in a weighted digraph. For graphs with
+%only non-negative edge weights, the faster Dijkstra's algorithm also solves the problem. Thus, Bellman–Ford
+%is used primarily for graphs with negative edge weights. The algorithm is named after its developers, Richard
+%Bellman and Lester Ford, Jr.\\
 
-If a graph contains a "negative cycle", i.e., a cycle whose edges sum to a negative value, then walks of
-arbitrarily low weight can be constructed, i.e., there can be no shortest path. Bellman-Ford can detect
-negative cycles and report their existence, but it cannot produce a correct answer if a negative cycle is
-reachable from the source.\\
+Si un grafo contiene un ``Ciclo negativo'', por ejemplo, un ciclo cuya suma de aristas sea un valor negativo,
+entonces camina de forma arbitraria con los pesos que puede ser construida, por ejemplo, no puede haber camino más corto.
+El algoritmo puede detectar ciclos negativos y reportar su existencia, pero no puede producir una respuesta correcta
+si un ciclo negativo es alcanzable desde el nodo origen.\\
 
+%If a graph contains a "negative cycle", i.e., a cycle whose edges sum to a negative value, then walks of
+%arbitrarily low weight can be constructed, i.e., there can be no shortest path. Bellman-Ford can detect
+%negative cycles and report their existence, but it cannot produce a correct answer if a negative cycle is
+%reachable from the source.\\
 Para solucionar el longest path, simplemente se aplica bellman-ford con los pesos de los caminos negativos.
 \begin{verbatim}
 
@@ -135,8 +142,8 @@ paths results.\\
 
 Es una versión del shortest path problem donde hay que hayar la menor distancia entre todos los nodos.
 
-Existen dos algoritmos para solucionarlo, Floyd-Warshall y Jhonson. Floyd-Warshall lo hace en tiempo cubico, 
-mientras que Jhonson en $V x E$, por lo que solo es util si $E$ es asimptoticamente menor que $V x V$ (es decir,
+Existen dos algoritmos para solucionarlo, Floyd-Warshall y Jhonson. Floyd-Warshall lo hace en tiempo cúbico, 
+mientras que Jhonson en $V x E$, por lo que solo es útil si $E$ es asimptoticamente menor que $V x V$ (es decir,
 el grafo no es muy denso).
 
 \subsubsection{Floyd-Warshall}
@@ -260,9 +267,11 @@ outgoing edges at s, two incoming edges at t, and one incoming and one outgoing 
 Therefore, this subgraph consists of two edge-disjoint paths from s to t and possibly some additional (zero-length)
 cycles. Return the two disjoint paths from the subgraph.
 
-\subsection{Minimum Spanning Tree: Kruskal}
+\subsection{Minimum Spanning Tree}
 
-\subsection{Minimum Spanning Tree: Prim}
+\subsubsection{Algoritmo de kruskal}
+
+\subsubsection{Algoritmo de Prim}
 
 \subsection{Strongly Connected Components}
 
@@ -282,10 +291,10 @@ cycles. Return the two disjoint paths from the subgraph.
 \subsection{Aritmética Modular}
 
 Colección de códigos útiles para aritmética modular\\
-\codigofuente{../src/euclidean.${EXT}}
+\codigofuente{../src/euclidean.${EXT}}%$
 
 \subsection{Mayor exponente de un primo que divide a n!}
-\codigofuente{../src/mate/pow_div.${EXT}}
+\codigofuente{../src/mate/pow_div.${EXT}}%$
 
 
 \subsection{Potencia modular}
@@ -298,6 +307,8 @@ Colección de códigos útiles para aritmética modular\\
 \section{Geometría}
 
 \subsection{Utilidades Geometría}
+Código base para implementación de otros algoritmos.
+\codigofuente{../src/geom/utilities.${EXT}} %$
 
 \subsection{Distancia mínima: Punto-Segmento}
 

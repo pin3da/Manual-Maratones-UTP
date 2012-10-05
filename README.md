@@ -17,4 +17,4 @@ donde Lan puede ser, cpp, java, o no usarse, en dicho caso el lenguaje por defec
 
 
 _______
-brought to you by Manuel Felipe Pineda and Diego Alejando Martinez
+brought to you by Maratones-UTP
