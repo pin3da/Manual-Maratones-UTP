@@ -105,7 +105,7 @@ procedure BellmanFord(list vertices, list edges, vertex source)
            error "Graph contains a negative-weight cycle"
 
 
-\subsection{Edge disjoint shortest paths}
+\subsection{Shortest pair of edge disjoint paths}
 
 Edge disjoint shortest pair algorithm is an algorithm in computer network routing. The algorithm 
 is used for generating the shortest pair of edge disjoint paths between a given pair of vertices as follows:
@@ -122,6 +122,36 @@ Run the shortest path algorithm (Note: the algorithm should accept negative cost
 Erase the overlapping edges of the two paths found, and reverse the direction of the remaining arcs on the 
 first shortest path such that each arc on it is directed towards the sink vertex now. The desired pair of 
 paths results.
+
+\subsection{Shortest pair of completely disjoint paths}
+
+In theoretical computer science and network routing, Suurballe's algorithm is an algorithm for finding two
+disjoint paths in a nonnegatively-weighted directed graph, so that both paths connect the same pair of vertices
+and have minimum total length. The algorithm was conceived by J. W. Suurballe and published in 1974. The main idea
+of Surballe's algorithm is to use Dijkstra's algorithm to find one path, to modify the weights of the graph edges,
+and then to run Dijkstra's algorithm a second time. The modification to the weights is similar to the weight 
+modification in Johnson's algorithm, and preserves the non-negativity of the weights while allowing the second
+instance of Dijkstra's algorithm to find the correct second path.
+
+Suurballe's algorithm performs the following steps:
+
+Find the shortest path tree T rooted at node s by running Dijkstra's algorithm. This tree contains for every vertex u,
+a shortest path from s to u. Let P1 be the shortest cost path froms to t. The edges in T are called tree edges
+and the remaining edges are called non tree edges.
+
+Modify the cost of each edge in the graph by replacing the cost w(u,v) of every edge (u,v) 
+by w'(u,v) = w(u,v) − d(s,v) + d(s,u). According to the resulting modified cost function, all tree edges have a
+cost of 0, and non tree edges have a non negative cost.
+
+Create a residual graph Gt formed from G by removing the edges of G that are directed into s and by reversing 
+the direction of the zero length edges along path P1.
+
+Find the shortest path P2 in the residual graph Gt by running Dijkstra's algorithm.
+
+Discard the reversed edges of P2 from both paths. The remaining edges of P1 and P2 form a subgraph with two 
+outgoing edges at s, two incoming edges at t, and one incoming and one outgoing edge at each remaining vertex.
+Therefore, this subgraph consists of two edge-disjoint paths from s to t and possibly some additional (zero-length)
+cycles. Return the two disjoint paths from the subgraph.
 
 \subsection{Floyd-Warshall}
 
