@@ -9,12 +9,11 @@ Guía de algoritmos para maratones de pogramación - Universidad tecnológica de
 ir al directorio tex y ejecutar dependiendo del lenguaje deseado.
 
 	$ cd tex/
-	$ export EXT=java 
-	$ export EXT=cpp
-	////Solo una de las anteriores.
-	$ pdflatex manual.tex
+	$ ./comp [Lan]
+	
+donde Lan puede ser, cpp, java, o no usarse, en dicho caso el lenguaje por defecto será cpp.
 
-Disfrutar !
+##Disfrutar !
 
 
 _______
