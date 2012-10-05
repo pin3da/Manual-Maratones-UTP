@@ -22,13 +22,11 @@
 \begin{document}
 
 \title{Resumen de algoritmos para maratones de programación}
-\author{Manuel Felipe Pineda - Diego Alejandro Martínez}
+\author{Universidad Tecnológica de Pereira}
 \maketitle
 
 \tableofcontents
 \lstloadlanguages{C++,Java}
-
-\newpage
 
 %===============================================%
 \section{Plantilla}
@@ -45,7 +43,7 @@ a fondo cada rama antes de hacer el backtraing.\\
 \\
 Complejidad $O(|V|+|E|)$
 
-\codigofuente{../src/dfs.${EXT}}
+\codigofuente{../src/graphs/dfs.${EXT}}
 
 \subsection{Breadth First Search}
 
@@ -53,7 +51,7 @@ Es un algoritmo de búsqueda que empieza en la raíz y explora todos los nodos v
 vecino repite el proceso hasta encontrar la meta.\\
 Complejidad $O(|V|+|E|)$
 
-\codigofuente{../src/bfs.${EXT}}
+\codigofuente{../src/graphs/bfs.${EXT}}
 
 \subsection{Shortest path problem}
 
@@ -67,7 +65,7 @@ Calcula la ruta más corta a todos los nodos desde un origen.\\
 Todas las aristas deben ser NO negativas, en ese caso usar Bellman-ford.\\
 Complejidad $O(E\ log V)$
 
-\codigofuente{../src/dijkstra.${EXT}}
+\codigofuente{../src/graphs/dijkstra.${EXT}}
 
 
 \subsubsection{Bellman-Ford}
@@ -83,12 +81,12 @@ negative cycles and report their existence, but it cannot produce a correct answ
 reachable from the source.
 
 Para solucionar el longest path, simplemente se aplica bellman-ford con los pesos de los caminos negativos.
+\begin{verbatim}
 
 procedure BellmanFord(list vertices, list edges, vertex source)
    // This implementation takes in a graph, represented as lists of vertices
    // and edges, and modifies the vertices so that their distance and
    // predecessor attributes store the shortest paths.
-
    // Step 1: initialize graph
    for each vertex v in vertices:
        if v is source then v.distance := 0
@@ -110,23 +108,23 @@ procedure BellmanFord(list vertices, list edges, vertex source)
        v := uv.destination
        if u.distance + uv.weight < v.distance:
            error "Graph contains a negative-weight cycle"
-
+\end{verbatim}
 
 \subsection{Shortest pair of edge disjoint paths}
 
 Edge disjoint shortest pair algorithm is an algorithm in computer network routing. The algorithm 
 is used for generating the shortest pair of edge disjoint paths between a given pair of vertices as follows:
 
-Run the shortest pair algorithm for the given pair of vertices
+- Run the shortest pair algorithm for the given pair of vertices
 
-Replace each edge of the shortest path (equivalent to two oppositely directed arcs) by a single arc directed 
+- Replace each edge of the shortest path (equivalent to two oppositely directed arcs) by a single arc directed 
 towards the source vertex
 
-Make the length of each of the above arcs negative
+- Make the length of each of the above arcs negative
 
-Run the shortest path algorithm (Note: the algorithm should accept negative costs)
+- Run the shortest path algorithm (Note: the algorithm should accept negative costs)
 
-Erase the overlapping edges of the two paths found, and reverse the direction of the remaining arcs on the 
+- Erase the overlapping edges of the two paths found, and reverse the direction of the remaining arcs on the 
 first shortest path such that each arc on it is directed towards the sink vertex now. The desired pair of 
 paths results.
 
@@ -136,7 +134,7 @@ paths results.
 Es una versión del shortest path problem donde hay que hayar la menor distancia entre todos los nodos.
 
 Existen dos algoritmos para solucionarlo, Floyd-Warshall y Jhonson. Floyd-Warshall lo hace en tiempo cubico, 
-mientras que Jhonson en V x E, por lo que solo es util si E es asimptoticamente menor que V x V (es decir,
+mientras que Jhonson en $V x E$, por lo que solo es util si $E$ es asimptoticamente menor que $V x V$ (es decir,
 el grafo no es muy denso).
 
 \subsubsection{Floyd-Warshall}
@@ -157,7 +155,7 @@ Normal
  
  int path[][];
  /* A 2-dimensional matrix. At each step in the algorithm, path[i][j] is the shortest path
-    from i to j using intermediate vertices (1..k−1).  Each path[i][j] is initialized to
+    from i to j using intermediate vertices $(1 .. k - 1)$.  Each path[i][j] is initialized to
     edgeCost(i,j) or infinity if there is no edge between i and j.
  */
 
@@ -185,6 +183,8 @@ procedure FloydWarshallWithPathReconstruction ()
       return " ";   /* there is an edge from i to j, with no vertices between */
    else
       return GetPath(i,intermediate) + intermediate + GetPath(intermediate,j);
+      
+
 
 \subsubsection{Johnson}
 
@@ -204,21 +204,21 @@ Second, the Bellman–Ford algorithm is used, starting from the new vertex q, to
 least weight h(v) of a path from q to v. If this step detects a negative cycle, the algorithm is terminated.
 
 Next the edges of the original graph are reweighted using the values computed by the Bellman–Ford algorithm: 
-an edge from u to v, having lengthw(u,v), is given the new length w(u,v) + h(u) −h(v).
+an edge from u to v, having lengthw(u,v), is given the new length $ w(u,v) + h(u) - h(v).$
 
 Finally, q is removed, and Dijkstra's algorithm is used to find the shortest paths from each node s to every
 other vertex in the reweighted graph.
 
-In the reweighted graph, all paths between a pair s and t of nodes have the same quantity h(s) −h(t) added to
+In the reweighted graph, all paths between a pair s and t of nodes have the same quantity $h(s) - h(t)$ added to
 them, so a path that is shortest in the original graph remains shortest in the modified graph and vice versa.
 However, due to the way the values h(v) were computed, all modified edge lengths are non-negative, ensuring the
 optimality of the paths found by Dijkstra's algorithm. The distances in the original graph may be calculated from 
 the distances calculated by Dijkstra's algorithm in the reweighted graph by reversing the reweighting transformation.
 
 The time complexity of this algorithm, using Fibonacci heaps in the implementation of Dijkstra's algorithm, 
-is O(V2log V + VE): the algorithm uses O(VE) time for the Bellman–Ford stage of the algorithm, and O(V log V + E)
+is O(V2log V + VE): the algorithm uses O(VE) time for the Bellman–Ford stage of the algorithm, and $O(V log V + E)$
 for each of V instantiations of Dijkstra's algorithm. Thus, when the graph is sparse, the total time can be faster
-than the Floyd–Warshall algorithm, which solves the same problem in time O(V3).
+than the Floyd–Warshall algorithm, which solves the same problem in time $ O(V3).$
 
 
 \subsection{Shortest pair of completely disjoint paths}
@@ -238,7 +238,7 @@ a shortest path from s to u. Let P1 be the shortest cost path froms to t. The ed
 and the remaining edges are called non tree edges.
 
 Modify the cost of each edge in the graph by replacing the cost w(u,v) of every edge (u,v) 
-by w'(u,v) = w(u,v) − d(s,v) + d(s,u). According to the resulting modified cost function, all tree edges have a
+by $w'(u,v) = w(u,v) - d(s,v) + d(s,u).$ According to the resulting modified cost function, all tree edges have a
 cost of 0, and non tree edges have a non negative cost.
 
 Create a residual graph Gt formed from G by removing the edges of G that are directed into s and by reversing 
@@ -276,7 +276,7 @@ Colección de códigos útiles para aritmética modular\\
 \codigofuente{../src/euclidean.${EXT}}
 
 \subsection{Mayor exponente de un primo que divide a n!}
-\codigofuente{../src/pow_div.${EXT}}
+\codigofuente{../src/mate/pow_div.${EXT}}
 
 
 \subsection{Potencia modular}
