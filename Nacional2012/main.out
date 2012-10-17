@@ -1,0 +1,88 @@
+\BOOKMARK [1][-]{section.1}{Plantilla}{}
+\BOOKMARK [1][-]{section.2}{Grafos}{}
+\BOOKMARK [2][-]{subsection.2.1}{Depth First Search}{section.2}
+\BOOKMARK [2][-]{subsection.2.2}{Breadth First Search}{section.2}
+\BOOKMARK [2][-]{subsection.2.3}{Shortest path problem}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Dijkstra}{subsection.2.3}
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Bellman-Ford}{subsection.2.3}
+\BOOKMARK [2][-]{subsection.2.4}{All-pairs shortest paths}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.4.1}{Floyd-Warshall}{subsection.2.4}
+\BOOKMARK [3][-]{subsubsection.2.4.2}{Johnson}{subsection.2.4}
+\BOOKMARK [2][-]{subsection.2.5}{Minimum Spanning Tree}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.5.1}{Algoritmo de kruskal}{subsection.2.5}
+\BOOKMARK [3][-]{subsubsection.2.5.2}{Algoritmo de Prim}{subsection.2.5}
+\BOOKMARK [2][-]{subsection.2.6}{Strongly Connected Components}{section.2}
+\BOOKMARK [2][-]{subsection.2.7}{Puntos de articulaci\363n}{section.2}
+\BOOKMARK [2][-]{subsection.2.8}{2-SAT}{section.2}
+\BOOKMARK [2][-]{subsection.2.9}{Maximum bipartite: Kuhn\220s algorithm}{section.2}
+\BOOKMARK [2][-]{subsection.2.10}{Flujo M\341ximo}{section.2}
+\BOOKMARK [2][-]{subsection.2.11}{Lowest Common Ancestor}{section.2}
+\BOOKMARK [2][-]{subsection.2.12}{Topological sort}{section.2}
+\BOOKMARK [2][-]{subsection.2.13}{Shortest pair of edge disjoint paths}{section.2}
+\BOOKMARK [2][-]{subsection.2.14}{Shortest pair of completely disjoint paths}{section.2}
+\BOOKMARK [2][-]{subsection.2.15}{Eulerian path}{section.2}
+\BOOKMARK [1][-]{section.3}{Programaci\363n Din\341mica}{}
+\BOOKMARK [2][-]{subsection.3.1}{Edit Distance}{section.3}
+\BOOKMARK [2][-]{subsection.3.2}{Integer Knapsack Problem}{section.3}
+\BOOKMARK [2][-]{subsection.3.3}{Counting Boolean Parenthesizations}{section.3}
+\BOOKMARK [2][-]{subsection.3.4}{Longest Increasing Subsequence}{section.3}
+\BOOKMARK [2][-]{subsection.3.5}{Josephus problem}{section.3}
+\BOOKMARK [1][-]{section.4}{Matem\341ticas}{}
+\BOOKMARK [2][-]{subsection.4.1}{F\363rmulas \372tiles}{section.4}
+\BOOKMARK [2][-]{subsection.4.2}{Aritm\351tica Modular}{section.4}
+\BOOKMARK [2][-]{subsection.4.3}{Mayor exponente de un primo que divide a n!}{section.4}
+\BOOKMARK [2][-]{subsection.4.4}{Potencia modular}{section.4}
+\BOOKMARK [2][-]{subsection.4.5}{Criba de Erat\363stenes}{section.4}
+\BOOKMARK [2][-]{subsection.4.6}{Test de primalidad}{section.4}
+\BOOKMARK [2][-]{subsection.4.7}{Combinatoria}{section.4}
+\BOOKMARK [3][-]{subsubsection.4.7.1}{Sumas}{subsection.4.7}
+\BOOKMARK [3][-]{subsubsection.4.7.2}{Cuadro Resumen}{subsection.4.7}
+\BOOKMARK [1][-]{section.5}{Geometr\355a}{}
+\BOOKMARK [2][-]{subsection.5.1}{Utilidades Geometr\355a}{section.5}
+\BOOKMARK [2][-]{subsection.5.2}{Transformaciones}{section.5}
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Rotaci\363n}{subsection.5.2}
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Desplazamiento dos dimensiones}{subsection.5.2}
+\BOOKMARK [2][-]{subsection.5.3}{Distancia m\355nima: Punto-Segmento}{section.5}
+\BOOKMARK [2][-]{subsection.5.4}{Distancia m\355nima: Punto-Recta}{section.5}
+\BOOKMARK [2][-]{subsection.5.5}{Determinar si un pol\355gono es convexo}{section.5}
+\BOOKMARK [2][-]{subsection.5.6}{Determinar si un punto est\341 dentro de un pol\355gono convexo}{section.5}
+\BOOKMARK [2][-]{subsection.5.7}{Determinar si un punto est\341 dentro de un pol\355gono cualquiera}{section.5}
+\BOOKMARK [2][-]{subsection.5.8}{Intersecci\363n de dos rectas}{section.5}
+\BOOKMARK [2][-]{subsection.5.9}{Intersecci\363n de dos segmentos}{section.5}
+\BOOKMARK [2][-]{subsection.5.10}{Determinar si dos segmentos se intersectan o no}{section.5}
+\BOOKMARK [2][-]{subsection.5.11}{Centro del c\355rculo que pasa por tres puntos.}{section.5}
+\BOOKMARK [2][-]{subsection.5.12}{Par de puntos m\341s cercanos}{section.5}
+\BOOKMARK [2][-]{subsection.5.13}{Par de puntos m\341s alejados}{section.5}
+\BOOKMARK [2][-]{subsection.5.14}{\301rea de un pol\355gono}{section.5}
+\BOOKMARK [2][-]{subsection.5.15}{Convexhull}{section.5}
+\BOOKMARK [3][-]{subsubsection.5.15.1}{Graham Scan}{subsection.5.15}
+\BOOKMARK [2][-]{subsection.5.16}{Great circle distance}{section.5}
+\BOOKMARK [2][-]{subsection.5.17}{Picks theorem}{section.5}
+\BOOKMARK [1][-]{section.6}{Strings}{}
+\BOOKMARK [2][-]{subsection.6.1}{Knuth-Morris-Pratt KMP}{section.6}
+\BOOKMARK [2][-]{subsection.6.2}{Aho-Corasick}{section.6}
+\BOOKMARK [2][-]{subsection.6.3}{Suffix Array}{section.6}
+\BOOKMARK [2][-]{subsection.6.4}{Minimum string rotation}{section.6}
+\BOOKMARK [1][-]{section.7}{Teor\355a de Juegos}{}
+\BOOKMARK [1][-]{section.8}{Estructuras de Datos}{}
+\BOOKMARK [2][-]{subsection.8.1}{RMQ}{section.8}
+\BOOKMARK [2][-]{subsection.8.2}{Union-find \(disjoint-set\)}{section.8}
+\BOOKMARK [2][-]{subsection.8.3}{Prefix Tree - Triee}{section.8}
+\BOOKMARK [2][-]{subsection.8.4}{Fenwick Tree}{section.8}
+\BOOKMARK [2][-]{subsection.8.5}{Interval Tree}{section.8}
+\BOOKMARK [1][-]{section.9}{Hashing}{}
+\BOOKMARK [2][-]{subsection.9.1}{FNV Hash}{section.9}
+\BOOKMARK [2][-]{subsection.9.2}{JSW Hash}{section.9}
+\BOOKMARK [1][-]{section.10}{Misel\341neo}{}
+\BOOKMARK [2][-]{subsection.10.1}{Bitwise operations}{section.10}
+\BOOKMARK [2][-]{subsection.10.2}{F\355sica}{section.10}
+\BOOKMARK [3][-]{subsubsection.10.2.1}{Movimiento parab\363lico}{subsection.10.2}
+\BOOKMARK [2][-]{subsection.10.3}{Stable marriage}{section.10}
+\BOOKMARK [2][-]{subsection.10.4}{Poker}{section.10}
+\BOOKMARK [2][-]{subsection.10.5}{Inversions}{section.10}
+\BOOKMARK [2][-]{subsection.10.6}{Nim}{section.10}
+\BOOKMARK [2][-]{subsection.10.7}{Sudoku}{section.10}
+\BOOKMARK [2][-]{subsection.10.8}{Gaussian elimination}{section.10}
+\BOOKMARK [2][-]{subsection.10.9}{Catalan numbers}{section.10}
+\BOOKMARK [2][-]{subsection.10.10}{Bell numbers}{section.10}
+\BOOKMARK [2][-]{subsection.10.11}{Polinomios}{section.10}

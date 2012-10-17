@@ -1,0 +1,27 @@
+####
+# Script para copiar archivos con nueva extensión
+# Septiembre 2012
+# Manuel Pineda
+####
+
+
+ext1=$1 #"java" # Argumento ext1 es la extensión inicial
+ext2=$2 #"ext" # Argumento ext2 es la extensión final
+
+RUTA=$(/bin/pwd)
+
+for i in *
+	do
+		if [ -f "$RUTA/$i" ]; then
+			arg=${i%%.$ext1}
+			if [ ! -f "$RUTA/$arg" ]; then
+				arg1=${arg#$i}
+				cp "$RUTA/$arg1.$ext1" "$RUTA/$arg1.$ext2"
+			fi
+		else
+			echo "$i" > /dev/null
+		fi
+	done
+
+
+exit 0
