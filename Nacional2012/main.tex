@@ -19,6 +19,8 @@
 \setlength{\columnsep}{0.5in}
 \setlength{\columnseprule}{1px}
 
+\date{20 de Octubre de 2012}
+
 \begin{document}
 
 \title{Resumen de algoritmos para maratones de programación}
@@ -312,6 +314,24 @@ Constructing Eulerian paths and circuits
 
 Consider a graph known to have all edges in the same component and at most two vertices of odd degree. We can construct an Eulerian path out of this graph by using Fleury's algorithm, which dates to 1883. We start with a vertex of odd degree—if the graph has none, then start with any vertex. At each step we move across an edge whose deletion would not disconnect the graph, unless we have no choice, then we delete that edge. At the end of the algorithm there are no edges left, and the sequence of edges we moved across forms an Eulerian cycle if the graph has no vertices of odd degree; or an Eulerian path if there are exactly two vertices of odd degree.
 
+\subsection{Assigment problem}
+
+The assignment problem is one of the fundamental combinatorial optimization problems in the branch of optimization or operations research in mathematics. It consists of finding a maximum weight matching in a weighted bipartite graph.
+
+In its most general form, the problem is as follows:
+
+There are a number of agents and a number of tasks. Any agent can be assigned to perform any task, incurring some cost that may vary depending on the agent-task assignment. It is required to perform all tasks by assigning exactly one agent to each task in such a way that the total cost of the assignment is minimized.
+
+If the numbers of agents and tasks are equal and the total cost of the assignment for all tasks is equal to the sum of the costs for each agent (or the sum of the costs for each task, which is the same thing in this case), then the problem is called the linear assignment problem. Commonly, when speaking of the assignment problem without any additional qualification, then the linear assignment problem is meant.
+
+Suppose that a taxi firm has three taxis (the agents) available, and three customers (the tasks) wishing to be picked up as soon as possible. The firm prides itself on speedy pickups, so for each taxi the "cost" of picking up a particular customer will depend on the time taken for the taxi to reach the pickup point. The solution to the assignment problem will be whichever combination of taxis and customers results in the least total cost.
+
+However, the assignment problem can be made rather more flexible than it first appears. In the above example, suppose that there are four taxis available, but still only three customers. Then a fourth dummy task can be invented, perhaps called "sitting still doing nothing", with a cost of 0 for the taxi assigned to it. The assignment problem can then be solved in the usual way and still give the best solution to the problem.
+
+Similar tricks can be played in order to allow more tasks than agents, tasks to which multiple agents must be assigned (for instance, a group of more customers than will fit in one taxi), or maximizing profit rather than minimizing cost.
+
+\codigofuente{src/graphs/assigment.cpp}
+
 \section{Programación Dinámica}
 
 \subsection{Edit Distance}
@@ -338,6 +358,12 @@ In computer science, the longest increasing subsequence problem is to find a sub
 
 \codigofuente{src/dp/lis.cpp}
 
+\subsection{TSP}
+
+The travelling salesman problem (TSP) is an NP-hard problem in combinatorial optimization studied in operations research and theoretical computer science. Given a list of cities and their pairwise distances, the task is to find the shortest possible route that visits each city exactly once and returns to the origin city. The best know solution is $O(2^n)$.
+
+\codigofuente{src/dp/tsp.cpp}
+
 \subsection{Josephus problem}
 
 In computer science and mathematics, the Josephus problem (or Josephus permutation) is a theoretical problem related to a certain counting-out game.
@@ -345,6 +371,12 @@ There are people standing in a circle waiting to be executed. After the first ma
 The task is to choose the place in the initial circle so that you are the last one remaining and so survive.
 
 \codigofuente{src/dp/josephus.cpp}
+
+\subsection{Minimum biroute pass}
+
+The problem of the minimum biroute pass is two find a minimum weight (or length) route that starts from the west-most point or node, makes a pass to the east-most point or node visiting some of the nodes, then makes a second pass from the east-most point or node back to the first one visiting the remaining islands. In each pass the route moves steadily east (in the first pass) or west (in the second pass), but moves as far north or south as needed.
+
+\codigofuente{src/dp/biroute.cpp}
 
 %===============================================%
 \section{Matemáticas}
@@ -387,8 +419,7 @@ $$ \sum_{k=0}^{n} k^2 = \frac{n(n + 1)(2n + 1)}{6} $$ \\ $$ \sum_{k=0}^{n} k^3 =
 $$ \sum_{k=0}^{n} k^4 = \frac{(6n^5 + 15n^4 + 10n^3 - n)}{30} $$ \\ $$ \sum_{k=0}^{n} k^5 = \frac{(2n^6 + 6n^5 + 5n^4  - n^2)}{12} $$ \\
 $$ \sum_{k=0}^{n} x^k = \frac{x^{n+1 - 1}}{x - 1} $$ \\
 
-%%%===== REVISAR AQUI =======
-$$ojo ! \sum_{k=0}^{n} kx^k = \frac{{x - {n + 1}x^{n+1} + nx^{n+2}}}{{x - 1} 1 + x + x^2 + \dots }= \frac{1}{{1 - x}} $$ \\
+$$ \sum_{k=0}^{n} kx^k = \frac{{x - {n + 1}x^{n+1} + nx^{n+2}}}{{x - 1}^2 } 1 + x + x^2 + \dots = \frac{1}{{1 - x}} $$ \\
 %\end{tabular}
 
 
@@ -437,29 +468,92 @@ Para rotar un punto $(x,y)$ un ángulo $\theta$ (counterclockwise) con respecto 
  \end{bmatrix}
 \]
 
-Para rotar un punto $(x,y,z)$ un ángulo $\theta$ (counterclockwise) con respecto a un eje de rotación se tiene:($Rodrigues' rotation formula$)
+Para rotar un punto \mathbf{v} $(x,y,z)$ un ángulo $\theta$ (counterclockwise) con respecto a \mathbf{k} (vector unitario que describe el eje de rotación) se tiene:($Rodrigues' rotation formula$).\\
+
 
 \mathbf{v}_\mathrm{rot} = \mathbf{v} \cos\theta + (\mathbf{k} \times \mathbf{v})\sin\theta
-  + \mathbf{k} (\mathbf{k} \cdot \mathbf{v}) (1 - \cos\theta).
+  + \mathbf{k} (\mathbf{k} \cdot \mathbf{v}) (1 - \cos\theta).\\
+ 
+Si se desea representar la anterior rotación como una transformación se obtendría lo siguiente:
 
-
-
-\subsubsection{Desplazamiento dos dimensiones}
-La traslacion es el efecto que conseguiremos al mover un objeto de un lugar a otro. Para lograrlo vamos a suponer un punto en algun lugar, ese punto u objeto tiene unas coordenas dadas en X y Y, muy bien ahora supongamos que queremos "trasladar" ese objeto a otro lugar a otra "coordenada", entonces lo que haremos sera :\\
-Paso 1: Obtener el lugar donde se encuentra.\\
-Paso 2: Dar a conocer cuantos lugares se movera, este dato sera en numeros enteros,es decir 1 espacio, 2 espacios, 3 espacios ó hasta n numero de espacios.\\
-Luego hacemos lo siguiente:
 \[
-\left[ {\begin{array}{*{20}c}
-   x & y & 1  \\
-\end{array}} \right]\left[ {\begin{array}{*{20}c}
-   1 & 0 & 0  \\
-   0 & 1 & 0  \\
-   {\Delta x} & {\Delta y} & 1  \\
-\end{array}} \right] = \left[ {\begin{array}{*{20}c}
-   {x + 0 + \Delta x} & {y + 0 + \Delta x} & {z + 0 + 0}  \\
-\end{array}} \right]
+ \begin{bmatrix}
+  x \\
+  y \\
+  z
+ \end{bmatrix}
+ =
+ \]
+ \[
+\begin{bmatrix}
+  $ ct + (k_x)^2*mct$ & $k_x*k_y*mct - k_z*st$ & $k_y*st + k_x*k_z*mct$\\
+  $k_z*st+ k_x*k_y*mct$ & $ct + (k_y)^2*mct$ & $-k_x*st + k_y*k_z*mct$\\
+  $-k_y*st + k_x*k_z*mct$ & $k_x*st + k_y*k_z*mct$ & $ct + (k_z)^2*mct$ 
+ \end{bmatrix}
+ *
+ \begin{bmatrix}
+  x \\
+  y \\
+  z
+ \end{bmatrix}
 \]
+
+Donde $ct =  \cos \theta$, $st = \sin \theta$ , $mct=(1 - \cos \theta)$ y $k_x,k_y,k_z$ son las componentes de $k$.
+
+\subsubsection{Traslación}
+
+Para trasladar un punto $(x,y,z)$ en $(\Delta x,\Delta y, \Delta z)$ se tiene(coordenadas homogeneas):
+
+\[
+ \begin{bmatrix}
+  x \\
+  y \\
+  z  \\
+  1
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+  1 & 0 & 0 & \Delta x\\
+  0 & 1 & 0 & \Delta y\\
+  0 & 0 & 1 & \Delta z\\
+  0 & 0 & 0 & 1 
+ \end{bmatrix}
+ *
+ \begin{bmatrix}
+  x \\
+  y \\
+  z \\
+  1
+ \end{bmatrix}
+\]
+
+\subsubsection{Escalamiento}
+
+Para escalar un punto $(x,y,z)$ en $(vx,vy,vz)$ se tiene(coordenadas homogeneas):
+
+\[
+ \begin{bmatrix}
+  x \\
+  y \\
+  z  \\
+  1
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+  vx & 0 & 0 & 0\\
+  0 & vy & 0 & 0\\
+  0 & 0 & vy & 0\\
+  0 & 0 & 0 & 1 
+ \end{bmatrix}
+ *
+ \begin{bmatrix}
+  x \\
+  y \\
+  z \\
+  1
+ \end{bmatrix}
+\]
+
 
 
 \subsection{Distancia mínima: Punto-Segmento}
@@ -516,6 +610,14 @@ La función \verb+farthest_point_pair_distance+ encuentra la distancia mas grand
 
 \codigofuente{src/geom/farthest_point_pair_distance.cpp}
 
+
+\subsection{Smallest Bounding Rectangle}
+
+El problema de encontrar el rectángulo de menor area o el rectángulo de menor perímetro que contenga un polígono convexo (el rectángulo no necesariamente tiene que tener sus lados paralelos a los ejes coordenados) se puede resolver en $O(n)$ usando $rotating calipers$, de tal manera que si el problema es hallar ese rectángulo para una nube de puntos en lugar de un polígono convexo se puede hallar el $convex hull$ para esa nube de puntos y posteriormente aplicar el algoritmo que a continuación se describe. A este algoritmo se le pasa como argumento el conjunto de puntos de un polígono convexo en orden $counterclockwise$, si el parámetro \verb+area+ es \verb+true+ entonces el algoritmo retorna el área del rectángulo de menor área que envuelve el polígono, sino devuelve el perímetro del rectángulo de menor perímetro que envuelve el polígono.
+NOTA: la función \verb+rotate2+ recibe a $\cos\theta$ y a $\sin\theta$ como parámetros en lugar de $\theta$ (donde $\theta$ es el ángulo para la rotación de un vector), lo anterior para evitar usar funciones trigonométricas inversas las cuales conducen a errores de precisión en los resultados.
+
+\codigofuente{src/geom/smallestboundingrectangle.cpp}
+
 \subsection{Área de un polígono}
 
 Si P es un polígono simple (no se intersecta a sí mismo) su área está dada
@@ -568,6 +670,48 @@ V = number of vertices
 E = number of edges
 F = number of faces
 For example, consider a square with both diagonals drawn. We have V = 5, E = 8 and F = 5 (the outside of the square is also a face) and so V - E + F = 2. 
+
+\subsection{Sweep line}
+
+In computational geometry, the Bentley–Ottmann algorithm is a sweep line algorithm for listing all crossings in a set of line segments. For an input consisting of n line segments with k crossings, the Bentley–Ottmann algorithm takes time O((n + k) log n), a significant improvement on a naive algorithm that tests every pair of segments.
+
+Overall strategy
+
+The main idea of the Bentley–Ottmann algorithm is to use a sweep line approach, in which a vertical line L moves from left to right across the plane, intersecting the input line segments in sequence as it moves. It is simplest to describe the algorithm for the case that the input is in general position, meaning that no two line segment endpoints or crossings have the same x-coordinate, no segment endpoint lies on another segment, and no three line segments cross at the same point. In this case, L will always intersect the input line segments in a set of points whose vertical ordering changes only at a finite set of discrete events. Thus, the continuous motion of L can be broken down into a finite sequence of steps, and simulated by an algorithm that runs in a finite amount of time.
+
+There are two types of event that may happen during the course of this simulation. When L sweeps across an endpoint of a line segment s, the intersection of L with s is added to or removed from the vertically ordered set of intersection points. These events are easy to predict, as the endpoints are known already from the input to the algorithm. The remaining events occur when L sweeps across a crossing between two line segments s and t. These events may also be predicted from the fact that, just prior to the event, the points of intersection of Lwith s and t are adjacent in the vertical ordering of the intersection points.
+
+The Bentley–Ottman algorithm itself maintains data structures representing the current vertical ordering of the intersection points of the sweep line with the input line segments, and a collection of potential future events formed by adjacent pairs of intersection points. It processes each event in turn, updating its data structures to represent the new set of intersection points.
+
+n order to efficiently maintain the intersection points of the sweep line L with the input line segments and the sequence of future events, the Bentley–Ottman algorithm maintains two data structures:
+
+A binary search tree, containing the set of input line segments that cross L, ordered by the y-coordinates of the points where these segments cross L. The crossing points themselves are not represented explicitly in the binary search tree. The Bentley–Ottman algorithm will insert a new segment s into this data structure when the sweep line L crosses the left endpoint p of this segment; the correct position of s in the binary search tree may be determined by a binary search, each step of which tests whether p is above or below some other segment that is crossed by L. Thus, an insertion may be performed in logarithmic time. The Bentley–Ottmann algorithm will also delete segments from the binary search tree, and use the binary search tree to determine the segments that are immediately above or below other segments; these operations may be performed using only the tree structure itself without reference to the underlying geometry of the segments.
+
+A priority queue (the "event queue"), used to maintain a sequence of potential future events in the Bentley–Ottmann algorithm. Each event is associated with a point p in the plane, either a segment endpoint or a crossing point, and the event happens when line L sweeps over p. Thus, the events may be prioritized by the x-coordinates of the points associated with each event. In the Bentley–Ottmann algorithm, the potential future events consist of line segment endpoints that have not yet been swept over, and the points of intersection of pairs of lines containing pairs of segments that are immediately above or below each other.
+
+The algorithm does not need to maintain explicitly a representation of the sweep line L or its position in the plane. Rather, the position of L is represented indirectly: it is the vertical line through the point associated with the most recently processed event.
+
+The Bentley–Ottmann algorithm performs the following steps.
+
+Initialize a priority queue Q of potential future events, each associated with a point in the plane and prioritized by the x-coordinate of the point. Initially, Q contains an event for each of the endpoints of the input segments.
+
+Initialize a binary search tree T of the line segments that cross the sweep line L, ordered by the y-coordinates of the crossing points. Initially, T is empty.
+
+While Q is nonempty, find and remove the event from Q associated with a point p with minimum x-coordinate. Determine what type of event this is and process it according to the following case analysis:
+
+If p is the left endpoint of a line segment s, insert s into T. Find the segments r and t that are immediately below and above s in T (if they exist) and if their crossing forms a potential future event in the event queue, remove it. If s crosses r or t, add those crossing points as potential future events in the event queue.
+
+If p is the right endpoint of a line segment s, remove s from T. Find the segments r and t that were (prior to the removal of s) immediately above and below it in T (if they exist). If r and t cross, add that crossing point as a potential future event in the event queue.
+
+If p is the crossing point of two segments s and t (with s below t to the left of the crossing), swap the positions of s and t in T. Find the segments r and u (if they exist) that are immediately below and above s and t respectively. Remove any crossing points rs and tu from the event queue, and, if r and t cross or s and u cross, add those crossing points to the event queue.
+
+The algorithm description above assumes that line segments are not vertical, that line segment endpoints do not lie on other line segments, that crossings are formed by only two line segments, and that no two event points have the same x-coordinate. However, these general position assumptions are not reasonable for most applications of line segment intersection.Bentley (Ottmann) suggested perturbing the input slightly to avoid these kinds of numerical coincidences, but did not describe in detail how to perform these perturbations. de Berg et al. (2000) describe in more detail the following measures for handling special-position inputs:
+
+Break ties between event points with the same x-coordinate by using the y-coordinate. Events with different y-coordinates are handled as before. This modification handles both the problem of multiple event points with the same x-coordinate, and the problem of vertical line segments: the left endpoint of a vertical segment is defined to be the one with the lower y-coordinate, and the steps needed to process such a segment are essentially the same as those needed to process a non-vertical segment with a very high slope.
+
+Define a line segment to be a closed set, containing its endpoints. Therefore, two line segments that share an endpoint, or a line segment that contains an endpoint of another segment, both count as an intersection of two line segments.
+
+When multiple line segments intersect at the same point, create and process a single event point for that intersection. The updates to the binary search tree caused by this event may involve removing any line segments for which this is the right endpoint, inserting new line segments for which this is the left endpoint, and reversing the order of the remaining line segments containing this event point. The output from the version of the algorithm described by de Berg et al. (2000) consists of the set of intersection points of line segments, labeled by the segments they belong to, rather than the set of pairs of line segments that intersect.
 
 %===============================================%
 \section{Strings}
@@ -683,6 +827,16 @@ $$ ((x | (x - 1 )) + 1 ) \& x$$
 
 \codigofuente{src/bitwise.cpp}
 
+GCC definitions:
+Si se añade ll al final se puede usar con unsigned long long
+
+\begin{itemize}
+\item \verb __builtin_clz (unsigned int x). Retorna la cantidad de leading zeros.
+\item \verb __builtin_ctz (unsigned int x). Retorna la cantidad de trailing zeros.
+\item \verb __builtin_popcount (unsigned int x). Retorna el número de bits en 1.
+\item \verb __builtin_parity (unsigned int x). Retorna el número de bits en 1 módulo 2.
+\end{itemize}
+
 \subsection{Física}
 
 \subsubsection{Movimiento parabólico} 
@@ -691,7 +845,7 @@ la velocidad en x es constante y la aceleración gravitacional apunta hacia la t
 
 velocidad en y: $ vs_{y} = v_{0y} +(-g)*t   $\\ 
 posición en x:  $ x = v_{0x}*t   $\\
-posición en y:  $ y = y_{0} + v_{0y}*t + 1/ $ \\
+posición en y:  $ y = y_{0} + v_{0y}*t + \frac{g*t^2}{2} $ \\
 
 \subsection{Stable marriage}
 
@@ -867,5 +1021,109 @@ $$B_{n+1}=\sum_{k=0}^{n}{{n \choose k}B_k}.$$
 \subsection{Polinomios}
 
 \codigofuente{src/misc/polynomials.cpp}
+
+\subsection{Subconjuntos}
+
+El siguiente codigo genera todos los subconjuntos de una mascara de bits (dado por el entero i) en tiempo lineal en el numero de subconjuntos.
+
+\codigofuente{src/misc/subconjuntos.cpp}
+
+\subsection{Combinations and permutations}
+
+\codigofuente{src/misc/combiperm.cpp}
+
+\subsection{Rationals}
+
+La siguiente clase implementa numeros racionales y evita overflow lo maximo posible. De ser necesario se puede cambiar el numerador y denominador por longs o BigIntegers facilmente.
+
+\codigofuente{src/misc/rationals.cpp}
+
+\subsection{Fibonnacci numbers}
+
+In mathematics, the Fibonacci numbers or Fibonacci series or Fibonacci sequence are the numbers in the following integer sequence:\\
+
+$0,\;1,\;1,\;2,\;3,\;5,\;8,\;13,\;21,\;34,\;55,\;89,\;144,\; \ldots\;$\\
+
+In mathematical terms, the sequence Fn of Fibonacci numbers is defined by the recurrence relation:\\
+
+$F_n = F_{n-1} + F_{n-2},\!\,$\\
+
+with seed values:\\
+
+$F_0 = 0,\; F_1 = 1.$\\
+
+The Fibonacci numbers can be found in different ways in the sequence of binary strings:\\
+
+The number of binary strings of length n without consecutive 1s is the Fibonacci number Fn+2. For example, out of the 16 binary strings of length 4, there are F6 = 8 without consecutive 1s – they are 0000, 0100, 0010, 0001, 0101, 1000, 1010 and 1001. By symmetry, the number of strings of length n without consecutive 0s is also Fn+2.\\
+
+The number of binary strings of length n without an odd number of consecutive 1s is the Fibonacci number Fn+1. For example, out of the 16 binary strings of length 4, there are F5 = 5 without an odd number of consecutive 1s – they are 0000, 0011, 0110, 1100, 1111.\\
+
+
+The number of binary strings of length n without an even number of consecutive 0s or 1s is 2Fn. For example, out of the 16 binary strings of length 4, there are 2F4 = 6 without an even number of consecutive 0s or 1s – they are 0001, 1000, 1110, 0111, 0101, 1010.\\
+
+
+Like every sequence defined by a linear recurrence with constant coefficients, the Fibonacci numbers have a closed-form solution:\\
+
+
+$F_n = \frac{\varphi^n-\psi^n}{\varphi-\psi} = \frac{\varphi^n-\psi^n}{\sqrt 5}$\\
+
+
+where:\\
+
+
+$\varphi = \frac{1 + \sqrt{5}}{2} \approx 1.61803\,39887\cdots\,$\\
+
+
+Therefore it can be found by rounding, or in terms of the floor function:\\
+
+
+$F_n=\bigg\lfloor\frac{\varphi^n}{\sqrt 5} + \frac{1}{2}\bigg\rfloor,\ n \geq 0.$\\
+
+
+A 2-dimensional system of linear difference equations that describes the Fibonacci sequence is:\\
+
+
+${F_{k+2} \choose F_{k+1}} = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} {F_{k+1} \choose F_{k}}$\\
+
+$\vec F_{k+1} = A \vec F_{k}$\\
+
+
+Z is a Fibonacci number if and only if the closed interval:\\
+
+
+$\bigg[\varphi z-\frac{1}{z},\varphi z+\frac{1}{z}\bigg]$\\
+
+
+contains a positive integer.\\
+
+
+Other identities:\\
+
+
+$F_{n} = F_{n-1} + F_{n-2},$\\
+
+$\sum_{i=1}^n F_i = F_{n+2} - 1$\\
+
+$F_n^2 - F_{n+r}F_{n-r} = (-1)^{n-r}F_r^2$\\
+
+$F_n^2 - F_{n+1}F_{n-1} = (-1)^{n-1}$\\
+
+$F_m F_{n+1} - F_{m+1} F_n = (-1)^n F_{m-n}$\\
+
+$F_{3n} = 2F_n^3 + 3F_n F_{n+1} F_{n-1} = 5F_n^3 + 3 (-1)^n F_n \,$\\
+
+$F_{3n+1} = F_{n+1}^3 + 3 F_{n+1}F_n^2 - F_n^3 \,$\\
+
+$F_{3n+2} = F_{n+1}^3 + 3 F_{n+1}^2F_n + F_n^3 \,$\\
+
+$F_{4n} = 4F_nF_{n+1}(F_{n+1}^2 + 2F_n^2) - 3F_n^2(F_n^2 + 2F_{n+1}^2) \,$\\
+
+$\gcd(F_m,F_n) = F_{\gcd(m,n)}\,$\\
+
+The periodo of the fibonnacci numbers modulo n is less than or equal to 6n.\\
+
+To calculate fib:\\\\
+
+${\begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}}^{n} = \begin{pmatrix} F_{n+1} & F_{n} \\ F_{n} & F_{n-1} \end{pmatrix}$
 
 \end{document}

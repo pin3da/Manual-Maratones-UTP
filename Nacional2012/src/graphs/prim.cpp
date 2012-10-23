@@ -42,18 +42,18 @@ add (parent of latest_addition) to
 for each adjacent of latest_addition
 {
 
-if (is_in_Q of adjacent) and 
-(weight-function(latest_addition, adjacent) < 
- min_distance of adjacent)
-{
+  if ( (is_in_Q of adjacent) and 
+  (weight-function(latest_addition, adjacent) < 
+   min_distance of adjacent) )
+  {
 
-set parent of adjacent to latest_addition
+    set parent of adjacent to latest_addition
 
-set min_distance of adjacent to 
-weight-function(latest_addition, adjacent)
+    set min_distance of adjacent to 
+    weight-function(latest_addition, adjacent)
 
-update adjacent in Q, order by min_distance
+    update adjacent in Q, order by min_distance
 
-}
+  }
 
 }

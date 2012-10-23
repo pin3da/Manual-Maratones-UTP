@@ -29,14 +29,13 @@ double farthest_point_pair_distance(ArrayList<Point> v){
     
     double angle_a=caliper_a.angle(edge_a);
     double angle_b=caliper_b.angle(edge_b);
-    caliper_a=caliper_a.rotate(-Math.min(angle_a, angle_b));
-    caliper_b=caliper_b.rotate(-Math.min(angle_a, angle_b));
-    if (angle_a>angle_b)
-      index_miny=(index_miny+1)%v.size();
-    else
-      index_maxy=(index_maxy+1)%v.size();
+    double min=Math.min(angle_a, angle_b);
+    caliper_a=caliper_a.rotate(-min);
+    caliper_b=caliper_b.rotate(-min);
+    if (Math.abs(angle_a-min)<eps) index_maxy=(index_maxy+1)%v.size();
+    if (Math.abs(angle_b-min)<eps) index_miny=(index_miny+1)%v.size();
     d=Math.max(v.get(index_miny).sub(v.get(index_maxy)).norm(),d);
-    rotated_angle=rotated_angle + Math.min(angle_a, angle_b);
+    rotated_angle=rotated_angle + min;
   }
   return d;
 }
