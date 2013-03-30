@@ -1,9 +1,0 @@
-#!/bin/bash
-
-ex=$1
-if ["${ex}" == '']
-	then 
-		ex=cpp
-fi
-export EXT=${ex}
-pdflatex manual.tex

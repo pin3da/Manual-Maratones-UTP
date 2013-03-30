@@ -3,18 +3,14 @@ Manual-Maratones-UTP
 
 Guía de algoritmos para maratones de pogramación - Universidad tecnológica de pereira.
 
-### Para usar
- - Se puede compilar con el lenguaje que se prefiera (c++ o java)
- 
-ir al directorio tex y ejecutar dependiendo del lenguaje deseado.
-
-	$ cd tex/
-	$ ./comp [Lan]
+### Para compilar
 	
-donde Lan puede ser, cpp, java, o no usarse, en dicho caso el lenguaje por defecto será cpp.
+	pdflatex main.tex
+
 
 ##Disfrutar !
 
+Actualizado hasta 29 - Marzo 2013.
 
 _______
 brought to you by Maratones-UTP

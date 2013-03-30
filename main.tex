@@ -1,0 +1,1020 @@
+\documentclass[10pt,letterpaper,twocolumn,twosided]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{geometry}
+
+\geometry{verbose,landscape,letterpaper,tmargin=2cm,bmargin=2cm,lmargin=1cm,rmargin=1cm}
+\newcommand{\codigofuente}[1]{
+\verbatiminput{#1}
+\dotfill
+}
+
+\setlength{\columnsep}{0.5in}
+\setlength{\columnseprule}{1px}
+
+\begin{document}
+
+\title{Resumen de algoritmos para maratones de programación}
+\author{Manuel Pineda}
+\maketitle
+
+\tableofcontents
+\lstloadlanguages{C++,Java}
+
+%===============================================%
+\section{Template}
+
+\codigofuente{src/template.cpp}
+
+%===============================================%
+\section{Grpahs}
+
+\subsection{Shortest path}
+
+\subsubsection{Dijkstra}
+Calcula la ruta de menor costo desde un nodo origen hasta el resto de nodos del grafo. {\bf El grafo no puede contener ciclos negativos, se queda en un ciclo infinito.} Usar bellman-ford en ese caso.
+
+Complejidad $O(E\ log V)$
+
+\codigofuente{src/graphs/dijkstra.cpp}
+
+
+\subsubsection{Bellman-Ford}
+Este algoritmo calcula la ruta más corta en un grafo dirigido, en el cual el peso de las aristas puede ser positivo o negativo. Para grafos con pesos NO-negativos, el algoritmo de Dijkstra resuelve más
+rápido este problema.\\
+
+
+Si un grafo contiene un ``Ciclo negativo'', por ejemplo, un ciclo cuya suma de aristas sea un valor negativo, entonces camina de forma arbitraria con los pesos que puede ser construida, por ejemplo, no puede haber camino más corto.
+El algoritmo puede detectar ciclos negativos y reportar su existencia, pero no puede producir una respuesta correcta si un ciclo negativo es alcanzable desde el nodo origen.\\
+
+Para solucionar el longest path, simplemente se aplica bellman-ford con los pesos de los caminos negativos.
+
+\codigofuente{src/graphs/bellman.cpp}
+
+\subsection{All-pairs shortest paths}
+
+Es una versión del shortest path problem donde hay que hallar la menor distancia entre todos los nodos.
+
+Existen dos algoritmos para solucionarlo, Floyd-Warshall y Jhonson. Floyd-Warshall lo hace en tiempo cúbico, mientras que Jhonson en $V x E$, por lo que solo es útil si $E$ es asintóticamente menor que $V X V$ (es decir, el grafo no es muy denso).
+
+\subsubsection{Floyd-Warshall}
+
+Este algoritmo funciona por programación dinámica.
+
+\codigofuente{src/graphs/floydwarshall.cpp}
+
+\subsubsection{Johnson}
+
+Johnson's algorithm is a way to find the shortest paths between all pairs of vertices in a
+sparse directed graph. It allows some of the edge weights to be negative numbers, but no 
+negative-weight cycles may exist. It works by using the Bellman–Ford algorithm to compute a
+transformation of the input graph that removes all negative weights, allowing Dijkstra's algorithm 
+to be used on the transformed graph.\\
+
+Pseudocodigo:
+
+Johnson's algorithm consists of the following steps:
+
+First, a new node q is added to the graph, connected by zero-weight edges to each other node.\\
+
+Second, the Bellman–Ford algorithm is used, starting from the new vertex q, to find for each vertex v the 
+least weight h(v) of a path from q to v. If this step detects a negative cycle, the algorithm is terminated.\\
+
+Next the edges of the original graph are reweighted using the values computed by the Bellman–Ford algorithm: 
+an edge from u to v, having lengthw(u,v), is given the new length $ w(u,v) + h(u) - h(v).$\\
+
+Finally, q is removed, and Dijkstra's algorithm is used to find the shortest paths from each node s to every
+other vertex in the reweighted graph.\\
+
+In the reweighted graph, all paths between a pair s and t of nodes have the same quantity $h(s) - h(t)$ added to
+them, so a path that is shortest in the original graph remains shortest in the modified graph and vice versa.
+However, due to the way the values h(v) were computed, all modified edge lengths are non-negative, ensuring the
+optimality of the paths found by Dijkstra's algorithm. The distances in the original graph may be calculated from 
+the distances calculated by Dijkstra's algorithm in the reweighted graph by reversing the reweighting transformation.\\
+
+The time complexity of this algorithm, using Fibonacci heaps in the implementation of Dijkstra's algorithm, 
+is O(V2log V + VE): the algorithm uses O(VE) time for the Bellman–Ford stage of the algorithm, and $O(V log V + E)$
+for each of V instantiations of Dijkstra's algorithm. Thus, when the graph is sparse, the total time can be faster
+than the Floyd–Warshall algorithm, which solves the same problem in time $ O(V3).$\\
+
+\subsection{Minimum Spanning Tree}
+El minimum spanning tree de un grafo no dirigido, es un subconjunto de aristas que contienen todos los vertices del grafo y además el peso total (sumatoria de las aristas) es minimizado.
+
+\subsubsection{Algoritmo de kruskal}
+
+\codigofuente{src/graphs/kruskal.cpp}
+
+\subsubsection{Algoritmo de Prim}
+
+\codigofuente{src/graphs/prim.cpp}
+
+\subsection{Strongly Connected Components}
+Un grafo dirigido es llamado strongly connected si existe un path desde cada vértice en el grafo a cualquier otro vértice. El strongly connected components de un grafo dirigido son los strongly connected subgrafos.
+
+\codigofuente{src/graphs/tarjan.cpp}
+
+\subsection{Bridges}
+Un bridge(también llamado cut-edge o cut arc) es una arista cuya eliminación incrementa el número de componentes conectados. De manera equivalente un edge es un bridge si y solo si este no es contenido en algún ciclo. Un grado es llamado bridgeless si este no contiene bridges.
+\codigofuente{src/graphs/bridges.cpp}
+
+\subsection{Puntos de articulación}
+
+\codigofuente{src/graphs/puntos_articulacion.cpp}
+
+\subsection{2-SAT}
+para construir el grafo dirigido, se crea un nodo para cada variable y su negación, luego para cada disjunción se crean dos aristas asi:  desde la negación de la primera variable a la segunda, y de la negacion de la segunda variable a la primera, esto indica, que si no se puede cumplir una de las variables hay que cumplir la otra:
+    (x0 | -x3) equiv (-x0 -> -x3) equiv (x3 -> x0)
+
+
+In terms of the implication graph, two terms belong to the same strongly connected component whenever there exist chains of implications from one term to the other and vice versa. Therefore, the two terms must have the same value in any satisfying assignment to the given 2-satisfiability instance. In particular, if a variable and its negation both belong to the same strongly connected component, the instance cannot be satisfied, because it is impossible to assign both of these terms the same value.
+\\
+this is a necessary and sufficient condition: a 2-CNF formula is satisfiable if and only if there is no variable that belongs to the same strongly connected component as its negation.
+\\
+Their algorithm performs the following steps:
+
+\begin{itemize}
+
+\item Construct the implication graph of the instance, and find its strongly connected components using any of the known linear-time algorithms for strong connectivity analysis. (Tarjan)
+
+
+\item Check whether any strongly connected component contains both a variable and its negation. If so, report that the instance is not satisfiable and halt.
+
+\item Construct the condensation of the implication graph, a smaller graph that has one vertex for each strongly connected component, and an edge from component i to component j whenever the implication graph contains an edge uv such that u belongs to component i and v belongs to component j. The condensation is automatically a directed acyclic graph and, like the implication graph from which it was formed, it is skew-symmetric.
+
+\item Topologically order the vertices of the condensation; the order in which the components are generated by Kosaraju's algorithm is automatically a topological ordering.
+
+\item For each component in this order, if its variables do not already have truth assignments, set all the terms in the component to be false. This also causes all of the terms in the complementary component to be set to true.
+
+\end{itemize}
+
+\subsection{Maximum bipartite: Kuhn’s algorithm}
+ There is a bipartite graph containing N vertices (n vertices in left part and k (N-n) vertices in right part of graph) and M edges. We are to find maximum bipartite matching, i.e. mark maximum number of edges, so that no one of them have adjacent vertices with each other.
+ 
+ \codigofuente{src/graphs/kuhn.cpp}
+
+\subsection{Flujo Máximo}
+En términos de teoría de grafos, nos dan una red - un grafo dirigido, en donde cada arista tiene cierta capacidad c asociada a él, un vértice inicial (la fuente) y un vértice final (el sumidero). Se nos pide asociar otro valor f que satisfaga  $f  \leq c$ para cada arista de tal forma de que para cada vértice, diferente a la fuente y el sumidero, la suma de los valores asociados a las aristas que entran a él sea igual a la suma de los valores que salen. Se llamará f al flujo a través de la arista. Además se pide maximizar la suma de los valores asociados a los arcos que salen de la fuente, el cual es el flujo total en la red.
+
+\subsubsection{Dinnic}
+Adjacency list implementation of Dinic's blocking flow algorithm.\\
+This is very fast in practice, and only loses to push-relabel flow.
+
+Running time:
+$ O(|V|^2 |E|) $
+
+INPUT: 
+
+-  graph, constructed using AddEdge()
+
+- source
+
+- sink
+
+
+
+OUTPUT:
+
+- maximum flow value
+
+- To obtain the actual flow values, look at all edges with tem $ capacity > 0 $(zero capacity edges are residual edges).
+
+
+\codigofuente{src/graphs/dinnic.cpp}
+
+
+\subsubsection{Min cost max flow}
+Implementation of min cost max flow algorithm using adjacency
+matrix (Edmonds and Karp 1972). This implementation keeps track of
+forward and reverse edges separately (so you can set $ cap[i][j] \ne cap[j][i]$ ). For a regular max flow, set all edge costs to 0.
+
+Running time, $O(|V|^2)$ cost per augmentation 
+
+max flow: $O(|V|^3) $augmentations 
+
+min cost max flow: $O(|V|^4 * MAX_EDGE_COST)$ augmentations
+
+
+INPUT: 
+\begin{itemize}
+\item graph, constructed using AddEdge()
+\item source
+\item sink
+\end{itemize}
+
+OUTPUT:
+
+- (maximum flow value, minimum cost value)
+
+- To obtain the actual flow, look at positive values only.
+
+\codigofuente{src/graphs/mincostmaxflow.cpp}
+
+\subsubsection{Push Relabel}
+Adjacency list implementation of FIFO push relabel maximum flow
+with the gap relabeling heuristic. This implementation is
+significantly faster than straight Ford-Fulkerson. It solves
+random problems with 10000 vertices and 1000000 edges in a few
+seconds, though it is possible to construct test cases that
+achieve the worst-case.
+
+Running time:
+
+$O(|V|^3)$
+
+INPUT: 
+
+- graph, constructed using AddEdge()
+
+- source
+
+- sink
+
+
+OUTPUT:
+
+- maximum flow value
+
+- To obtain the actual flow values, look at all edges with
+ $capacity > 0 $(zero capacity edges are residual edges).
+
+\codigofuente{src/graphs/pushrelabel.cpp}
+
+\subsubsection{Min Cost matching}
+
+Min cost bipartite matching via shortest augmenting paths
+
+This is an $O(n^3)$ implementation of a shortest augmenting path
+algorithm for finding min cost perfect matchings in dense
+graphs. In practice, it solves $1000 x 1000$ problems in around 1
+second.
+
+cost[i][j] = cost for pairing left node i with right node j
+
+Lmate[i] = index of right node that left node i pairs with
+
+Rmate[j] = index of left node that right node j pairs with
+
+The values in cost[i][j] may be positive or negative. To perform
+maximization, simply negate the cost[][] matrix.
+
+\codigofuente{src/graphs/mincostmatching.cpp}
+
+\subsubsection{Maximum bipartite matching}
+
+This code performs maximum bipartite matching.
+
+Running time: $O(|E| |V|)$ -- often much faster in practice
+
+
+INPUT: w[i][j] = edge between row node i and column node j
+OUTPUT: mr[i] = assignment for row node i, -1 if unassigned
+mc[j] = assignment for column node j, -1 if unassigned
+function returns number of matches made
+
+\codigofuente{src/graphs/bipartite.cpp}
+
+\subsubsection{Min cut}
+Adjacency matrix implementation of Stoer-Wagner min cut algorithm.
+
+Running time:
+$ O(|V|^3) $
+
+
+INPUT: 
+
+- graph, constructed using AddEdge()
+
+OUTPUT:
+- (min cut value, nodes in half of min cut)
+
+\codigofuente{src/graphs/mincut.cpp}
+
+
+\subsection{Lowest Common Ancestor}
+
+The lowest common ancestor (LCA) is a concept in graph theory and computer science. Let T be a rooted tree with n nodes. The lowest common ancestor is defined between two nodes v and w as the lowest node in T that has both v and w as descendants (where we allow a node to be a descendant of itself).
+
+Code real example using TarjanOLCA.
+
+\codigofuente{src/graphs/tarjanOLCA.cpp}
+
+
+\subsection{Topological sort}
+\codigofuente{src/graphs/toposort.cpp}
+
+\section{Programación Dinámica}
+
+\subsection{Edit Distance}
+
+El edit distance entre dos cadenas está definido como el número mínimo de operaciones para convertir una cadena en otra
+con tres operaciones, inserción, eliminación y reemplazo.\\
+Nótese que $d[i - 1][j] + 1$ representa un costo de 1 para la inserción, $d[i][j - 1] + 1$ costo 1 para eliminación, y $d[i - 1][j - 1] + (s1[i - 1] == s2[j - 1] ? 0 : 1))$ representa costo 1 para reemplazo (en caso de que no sean iguales). Con estas concideraciones es fácil adaptar este problema a otros similares.
+
+\codigofuente{src/dp/edit_distance.cpp}
+
+\subsection{Integer Knapsack Problem}
+
+The knapsack problem or rucksack problem is a problem in combinatorial optimization: Given a set of items, each with a weight and a value, determine the number of each item to include in a collection so that the total weight is less than or equal to a given limit and the total value is as large as possible.
+
+\codigofuente{src/dp/knapsack.cpp}
+
+\subsubsection{Repeat}
+If you can buy more of one article.
+
+\codigofuente{src/dp/knapsackrepeat.cpp}
+
+\subsection{Counting Boolean Parenthesizations}
+
+Dada una expresión booleana (por ejemplo true or false and true) se debe determinar cuántas maneras existen de agrupar las variables (poner paréntesis) de tal forma que la expresión sea verdadera.
+
+\subsection{Longest Increasing Subsequence}
+
+In computer science, the longest increasing subsequence problem is to find a subsequence of a given sequence in which the subsequence elements are in sorted order, lowest to highest, and in which the subsequence is as long as possible.
+
+\codigofuente{src/dp/lis.cpp}
+
+\subsection{TSP}
+
+The travelling salesman problem (TSP) is an NP-hard problem in combinatorial optimization studied in operations research and theoretical computer science. Given a list of cities and their pairwise distances, the task is to find the shortest possible route that visits each city exactly once and returns to the origin city. The best know solution is $O(2^n)$.
+
+\codigofuente{src/dp/tsp.cpp}
+
+\subsection{Josephus problem}
+
+In computer science and mathematics, the Josephus problem (or Josephus permutation) is a theoretical problem related to a certain counting-out game.
+There are people standing in a circle waiting to be executed. After the first man is executed, certain number of people are skipped and one man is executed. Then again, people are skipped and a man is executed. The elimination proceeds around the circle (which is becoming smaller and smaller as the executed people are removed), until only the last man remains, who is given freedom.
+The task is to choose the place in the initial circle so that you are the last one remaining and so survive.
+
+\codigofuente{src/dp/josephus.cpp}
+
+\subsection{Minimum biroute pass}
+
+The problem of the minimum biroute pass is two find a minimum weight (or length) route that starts from the west-most point or node, makes a pass to the east-most point or node visiting some of the nodes, then makes a second pass from the east-most point or node back to the first one visiting the remaining islands. In each pass the route moves steadily east (in the first pass) or west (in the second pass), but moves as far north or south as needed.
+
+\codigofuente{src/dp/biroute.cpp}
+
+%===============================================%
+\section{Matemáticas}
+
+
+
+\subsection{Aritmética Modular}
+
+Colección de códigos útiles para aritmética modular\\
+
+\codigofuente{src/mate/euclidean.cpp}
+
+\subsection{Mayor exponente de un primo que divide a n!}
+
+\codigofuente{src/mate/pow_div.cpp}
+
+\subsection{Potencia modular}
+
+\codigofuente{src/mate/mod_pow.cpp}
+
+\subsection{Criba de Eratóstenes}
+
+\codigofuente{src/mate/sieve.cpp}
+
+\subsection{Test de primalidad}
+
+\codigofuente{src/mate/rabin.cpp}
+
+
+\subsection{Combinatoria}
+
+\subsubsection{Sumas}
+
+%\begin{tabular}{ l c r }
+
+$$\sum_{k=0}^{n} k = \frac{n(n + 1)}{2}  $$\\ $$ \sum_{k=a}^{b} k = \frac{(a + b)(b - a + 1)}{2} $$ \\
+$$ \sum_{k=0}^{n} k^2 = \frac{n(n + 1)(2n + 1)}{6} $$ \\ $$ \sum_{k=0}^{n} k^3 = \frac{n^{2}(n + 1)^{2}}{4} $$ \\
+$$ \sum_{k=0}^{n} k^4 = \frac{(6n^5 + 15n^4 + 10n^3 - n)}{30} $$ \\ $$ \sum_{k=0}^{n} k^5 = \frac{(2n^6 + 6n^5 + 5n^4  - n^2)}{12} $$ \\
+$$ \sum_{k=0}^{n} x^k = \frac{x^{n+1 - 1}}{x - 1} $$ \\
+
+$$ \sum_{k=0}^{n} kx^k = \frac{{x - {n + 1}x^{n+1} + nx^{n+2}}}{{x - 1}^2 } 1 + x + x^2 + \dots = \frac{1}{{1 - x}} $$ \\
+%\end{tabular}
+
+
+\subsubsection{Cuadro Resumen}
+Formulas para combinaciones y Permutaciones
+
+\begin{tabular}[t]{|l |c |r|}
+\hline
+Tipo & ¿Se permite repeticion? & Fórmula \\
+\hline
+r permutaciones & No & $ {\frac{n!}{(n-r)!}} $ \\
+\hline
+r-combinaciones & No & $ {\frac{n!}{r!(n-r)!}} $  \\
+\hline
+r-permutaciones & Sí & $ {n^2} $ \\
+\hline
+r-combinaciones & Sí & ${\frac{(n+r-1)!}{r!(n-1)!}} $ \\
+\hline
+\end{tabular}
+
+%===============================================%
+\section{Geometría}
+
+\subsection{Utilidades Geometría}
+Código base para implementación de otros algoritmos.
+\codigofuente{src/geom/utilities.cpp}
+
+\subsection{Transformaciones}
+\subsubsection{Rotación}
+Para rotar un punto $(x,y)$ un ángulo $\theta$ (counterclockwise) con respecto al origen se tiene:
+
+\[
+ \begin{bmatrix}
+  x \\
+  y
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+  $\cos(\theta)$  $-\sin(\theta)$ \\
+  $\sin(\theta)$  $\cos(\theta)$
+ \end{bmatrix}
+ *
+ \begin{bmatrix}
+  x \\
+  y
+ \end{bmatrix}
+\]
+
+Para rotar un punto \mathbf{v} $(x,y,z)$ un ángulo $\theta$ (counterclockwise) con respecto a \mathbf{k} (vector unitario que describe el eje de rotación) se tiene:($Rodrigues' rotation formula$).\\
+
+
+\mathbf{v}_\mathrm{rot} = \mathbf{v} \cos\theta + (\mathbf{k} \times \mathbf{v})\sin\theta
+  + \mathbf{k} (\mathbf{k} \cdot \mathbf{v}) (1 - \cos\theta).\\
+ 
+Si se desea representar la anterior rotación como una transformación se obtendría lo siguiente:
+
+\[
+ \begin{bmatrix}
+  x \\
+  y \\
+  z
+ \end{bmatrix}
+ =
+ \]
+ \[
+\begin{bmatrix}
+  $ ct + (k_x)^2*mct$ & $k_x*k_y*mct - k_z*st$ & $k_y*st + k_x*k_z*mct$\\
+  $k_z*st+ k_x*k_y*mct$ & $ct + (k_y)^2*mct$ & $-k_x*st + k_y*k_z*mct$\\
+  $-k_y*st + k_x*k_z*mct$ & $k_x*st + k_y*k_z*mct$ & $ct + (k_z)^2*mct$ 
+ \end{bmatrix}
+ *
+ \begin{bmatrix}
+  x \\
+  y \\
+  z
+ \end{bmatrix}
+\]
+
+Donde $ct =  \cos \theta$, $st = \sin \theta$ , $mct=(1 - \cos \theta)$ y $k_x,k_y,k_z$ son las componentes de $k$.
+
+\subsubsection{Traslación}
+
+Para trasladar un punto $(x,y,z)$ en $(\Delta x,\Delta y, \Delta z)$ se tiene(coordenadas homogeneas):
+
+\[
+ \begin{bmatrix}
+  x \\
+  y \\
+  z  \\
+  1
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+  1 & 0 & 0 & \Delta x\\
+  0 & 1 & 0 & \Delta y\\
+  0 & 0 & 1 & \Delta z\\
+  0 & 0 & 0 & 1 
+ \end{bmatrix}
+ *
+ \begin{bmatrix}
+  x \\
+  y \\
+  z \\
+  1
+ \end{bmatrix}
+\]
+
+\subsubsection{Escalamiento}
+
+Para escalar un punto $(x,y,z)$ en $(vx,vy,vz)$ se tiene(coordenadas homogeneas):
+
+\[
+ \begin{bmatrix}
+  x \\
+  y \\
+  z  \\
+  1
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+  vx & 0 & 0 & 0\\
+  0 & vy & 0 & 0\\
+  0 & 0 & vy & 0\\
+  0 & 0 & 0 & 1 
+ \end{bmatrix}
+ *
+ \begin{bmatrix}
+  x \\
+  y \\
+  z \\
+  1
+ \end{bmatrix}
+\]
+
+
+
+\subsection{Distancia mínima: Punto-Segmento}
+
+\codigofuente{src/geom/minDistanceSgmntPnt.cpp}
+
+\subsection{Distancia mínima: Punto-Recta}
+
+\codigofuente{src/geom/punto_recta.cpp}
+
+\subsection{Determinar si un polígono es convexo}
+
+\codigofuente{src/geom/ifconvexpolygon.cpp}
+
+\subsection{Determinar si un punto está dentro de un polígono convexo}
+
+\codigofuente{src/geom/pointInaconvexpolygon.cpp}
+
+\subsection{Determinar si un punto está dentro de un polígono cualquiera}
+
+\codigofuente{src/geom/pointInAnyKindOfPolygon.cpp}
+
+\subsection{Intersección de dos rectas}
+Finds the intersection between two lines (Not segments! Infinite lines)\\
+Line 1 passes through points (x0, y0) and (x1, y1).\\
+Line 2 passes through points (x2, y2) and (x3, y3).\\
+Handles the case when the 2 lines are the same (infinite intersections),\\
+parallel (no intersection) or only one intersection.\\
+
+\codigofuente{src/geom/intersectardosrectas.cpp}
+
+\subsection{Intersección de dos segmentos}
+
+\codigofuente{src/geom/inter_dos_segmentos.cpp}
+
+\subsection{Determinar si dos segmentos se intersectan o no}
+
+\codigofuente{src/geom/inter_dos_segmentos_si_no.cpp}
+
+\subsection{Centro del círculo que pasa por tres puntos.}
+
+\codigofuente{src/geom/centro_circulo_ters_puntos.cpp}
+
+\subsection{Par de puntos más cercanos} 
+
+An O(nlog n) algorithm for the closest pair problem, a divide and conquer approach. The main function \verb+closestpair+ receives the set of points ordered by x and y coordinates, in Px and Py, respectively.
+WARNING: You must be careful with the algorithm used for splitting the points into two equal groups, it can produce endless recursive calls(Runtime error). The algorithm used here doesn't work when there are a lot of points with the same x coordinate, for solving this you must be sure that your algorithm always splits the group of points into two smaller groups of approximately equal size. 
+ 
+\codigofuente{src/geom/closestpair.cpp}
+
+\subsection{Par de puntos más alejados}
+
+La función \verb+farthest_point_pair_distance+ encuentra la distancia mas grande que hay entre cualquier par de vértices de un polígono convexo (los puntos que se le pasan a la función deben estar ordenados clockwise) en $O(n)$ usando $rotating calipers$, por lo tanto si se quiere solucionar el problema de la distancia más grande entre cualquier par de puntos de una nube de puntos arbitraria se debe primero calcular el $convexhull$ de la nube de puntos y ejecutar este algoritmo sobre ese polígono para un complejidad total de $O(nlogn)$ si se usa un algoritmo eficiente para el $convexhull$.
+
+\codigofuente{src/geom/farthest_point_pair_distance.cpp}
+
+
+\subsection{Smallest Bounding Rectangle}
+
+El problema de encontrar el rectángulo de menor area o el rectángulo de menor perímetro que contenga un polígono convexo (el rectángulo no necesariamente tiene que tener sus lados paralelos a los ejes coordenados) se puede resolver en $O(n)$ usando $rotating calipers$, de tal manera que si el problema es hallar ese rectángulo para una nube de puntos en lugar de un polígono convexo se puede hallar el $convex hull$ para esa nube de puntos y posteriormente aplicar el algoritmo que a continuación se describe. A este algoritmo se le pasa como argumento el conjunto de puntos de un polígono convexo en orden $counterclockwise$, si el parámetro \verb+area+ es \verb+true+ entonces el algoritmo retorna el área del rectángulo de menor área que envuelve el polígono, sino devuelve el perímetro del rectángulo de menor perímetro que envuelve el polígono.
+NOTA: la función \verb+rotate2+ recibe a $\cos\theta$ y a $\sin\theta$ como parámetros en lugar de $\theta$ (donde $\theta$ es el ángulo para la rotación de un vector), lo anterior para evitar usar funciones trigonométricas inversas las cuales conducen a errores de precisión en los resultados.
+
+\codigofuente{src/geom/smallestboundingrectangle.cpp}
+
+\subsection{Área de un polígono}
+
+Si P es un polígono simple (no se intersecta a sí mismo) su área está dada
+por:\\
+
+$$ A(P) = \frac{1}{2} \sum_{i=0}^{n-1} (x_i*y_{i+1}-x_{i+1}*y_i)$$
+
+P es un polígono ordenado anticlockwise.\\
+Si es clockwise, retorna el area negativa.\\ 
+Si no esta ordenado retorna basura.\\
+P[0] != P[n-1]
+
+\codigofuente{src/geom/areapoligono.cpp}
+
+\subsection{Convexhull}
+
+In mathematics, the convex hull or convex envelope for a set of points X in a real vector space V is the minimal convex set containing X.
+
+
+In computational geometry, a basic problem is finding the convex hull for a given finite nonempty set of points in the plane. It is common to use the term "convex hull" for the boundary of that set, which is a convex polygon, except in the degenerate case that points are collinear. The convex hull is then typically represented by a sequence of the vertices of the line segments forming the boundary of the polygon, ordered along that boundary.
+
+\subsubsection{Graham Scan}
+
+\codigofuente{src/geom/convexhull.cpp}
+
+\subsection{Great circle distance}
+
+The great-circle distance or orthodromic distance is the shortest distance between any two points on the surface of a sphere measured along a path on the surface of the sphere (as opposed to going through the sphere's interior).
+
+\codigofuente{src/geom/circledistance.cpp}
+
+\subsection{Picks theorem}
+
+Área de un polígono en función de los lattice inside y sobre el borde.
+
+
+$ Area = B/2 + I - 1 $
+
+B: Lattice points in the boundary.
+
+I: Lattice points inside.
+
+%===============================================%
+\section{Strings}
+
+\subsection{Knuth-Morris-Pratt KMP}
+
+The Knuth–Morris–Pratt string searching algorithm (or KMP algorithm) searches for occurrences of a "word" W within a main "text string" S by employing the observation that when a mismatch occurs, the word itself embodies sufficient information to determine where the next match could begin, thus bypassing re-examination of previously matched characters.
+
+\codigofuente{src/string/kmp.cpp}
+
+\subsection{Aho-Corasick}
+
+The Aho–Corasick string matching algorithm is a string searching algorithm invented by Alfred V. Aho and Margaret J. Corasick. It is a kind of dictionary-matching algorithm that locates elements of a finite set of strings (the "dictionary") within an input text. It matches all patterns simultaneously. The complexity of the algorithm is linear in the length of the patterns plus the length of the searched text plus the number of output matches. Note that because all matches are found, there can be a quadratic number of matches if every substring matches (e.g. dictionary = a, aa, aaa, aaaa and input string is aaaa).
+Informally, the algorithm constructs a finite state machine that resembles a trie with additional links between the various internal nodes. These extra internal links allow fast transitions between failed pattern matches (e.g. a search for cat in a trie that does not contain cat, but contains cart, and thus would fail at the node prefixed by ca), to other branches of the trie that share a common prefix (e.g., in the previous case, a branch for attribute might be the best lateral transition). This allows the automaton to transition between pattern matches without the need for backtracking.
+When the pattern dictionary is known in advance (e.g. a computer virus database), the construction of the automaton can be performed once off-line and the compiled automaton stored for later use. In this case, its run time is linear in the length of the input plus the number of matched entries.
+
+\codigofuente{src/string/aho.cpp}
+
+\subsection{Suffix Array}
+
+In computer science, a suffix array is an array of integers giving the starting positions of suffixes of a string in lexicographical order.
+
+\codigofuente{src/string/suffixarray.cpp}
+
+\subsection{Minimum string rotation}
+
+In computer science, the lexicographically minimal string rotation or lexicographically least circular substring is the problem of finding the rotation of a string possessing the lowest lexicographical order of all such rotations. For example, the lexicographically minimal rotation of "bbaaccaadd" would be "aaccaaddbb". It is possible for a string to have multiple lexicographically minimal rotations, but for most applications this does not matter as the rotations must be equivalent. Finding the lexicographically minimal rotation is useful as a way of normalizing strings. If the strings represent potentially isomorphic structures such as graphs, normalizing in this way allows for simple equality checking. A common implementation trick when dealing with circular strings is to concatenate the string to itself instead of having to perform modular arithmetic on the string indices.
+
+\codigofuente{src/string/minrot.cpp}
+
+%===============================================%
+\section{Teoría de Juegos}
+
+%===============================================%
+\section{Estructuras de Datos}
+
+\subsection{RMQ}
+
+Range Minimum Query (RMQ) is used on arrays to find the position of an element with the minimum value between two specified indices. We will see later that the LCA problem can be reduced to a restricted version of an RMQ problem, in which consecutive array elements differ by exactly 1.
+However, RMQs are not only used with LCA. They have an important role in string preprocessing, where they are used with suffix arrays (a new data structure that supports string searches almost as fast as suffix trees, but uses less memory and less coding effort). 
+
+\codigofuente{src/structures/rmq.cpp}
+
+\subsection{Union-find (disjoint-set)}
+
+\codigofuente{src/structures/uf.cpp}
+
+
+\subsection{Prefix Tree - Triee}
+
+The tries can insert and find strings in $O(L)$ time (where L represent the length of a single word). This is much faster than set , but is it a bit faster than a hash table.
+
+\codigofuente{src/structures/trie.cpp}
+
+
+\subsection{Fenwick Tree}
+
+Fenwick tree (aka Binary indexed tree) is a data structure that maintains a sequence of elements, and is able to compute cumulative sum of any range of consecutive elements in $O(logn)$ time. Changing value of any single element needs O(logn) time as well.
+The structure is space-efficient in the sense that it needs the same amount of storage as just a simple array of n elements.
+
+\codigofuente{src/structures/fenwick.cpp}
+
+\subsection{Segment Tree}
+
+\codigofuente{src/structures/segment.cpp}
+
+
+
+%===============================================%
+\section{Hashing} %%http://eternallyconfuzzled.com/tuts/algorithms/jsw_tut_hashing.aspx
+
+\subsection{FNV Hash}
+
+\codigofuente{src/hashing/FNV.cpp}
+
+\subsection{JSW Hash}
+Este es el más recomendado en términos de distribución.
+\codigofuente{src/hashing/JSW.cpp}
+
+%===============================================%
+\section{Miseláneo}
+
+\subsection {Bitwise operations}
+Operaciones útiles con bits.
+
+Use the following formula to turn off the rightmost 1-bit in a word, producing
+0 if none (e.g., 01011000 becomes 01010000):
+
+$$x \& (x - 1)$$
+
+Use the following formula to isolate the rightmost 0-bit, producing 0 if none
+(e.g., 10100111 becomes 00001000):
+
+$$ not(x) \& (x + 1)$$
+
+Use the following formula to right-propagate the rightmost 1-bit, producing
+all 1’s if  (e.g., 01011000 becomes 01011111):
+
+$$ x | (x - 1 )$$
+
+Use the following formula to turn off the rightmost contiguous string of 1-bits
+(e.g., 01011000 becomes 01000000):
+
+$$ ((x | (x - 1 )) + 1 ) \& x$$
+
+\codigofuente{src/bitwise.cpp}
+
+GCC definitions:
+Si se añade ll al final se puede usar con unsigned long long
+
+\begin{itemize}
+\item \verb __builtin_clz (unsigned int x). Retorna la cantidad de leading zeros.
+\item \verb __builtin_ctz (unsigned int x). Retorna la cantidad de trailing zeros.
+\item \verb __builtin_popcount (unsigned int x). Retorna el número de bits en 1.
+\item \verb __builtin_parity (unsigned int x). Retorna el número de bits en 1 módulo 2.
+\end{itemize}
+
+
+%\subsection{Poker}
+
+%\codigofuente{src/misc/poker.cpp}
+
+
+\subsection{Inversions}
+
+Inversion Count for an array indicates – how far (or close) the array is from being sorted. If array is already sorted then inversion count is 0. If array is sorted in reverse order that inversion count is the maximum.
+
+Formally speaking, two elements a[i] and a[j] form an inversion if a[i] > a[j] and i < j
+
+Example:
+
+The sequence 2, 4, 1, 3, 5 has three inversions (2, 1), (4, 1), (4, 3).
+
+\codigofuente{src/misc/inversions.cpp}
+
+\begin{comment}
+
+\subsection{Nim}
+
+Nim is a two-player mathematical game of strategy in which players take turns removing objects from distinct heaps. On each turn, a player must remove at least one object, and may remove any number of objects provided they all come from the same heap.
+Variants of Nim have been played since ancient times. The game is said to have originated in China (it closely resembles the Chinese game of "Jianshizi", or "picking stones"), but the origin is uncertain; the earliest European references to Nim are from the beginning of the 16th century. Its current name was coined by Charles L. Bouton of Harvard University, who also developed the complete theory of the game in 1901, but the origins of the name were never fully explained. The name is probably derived from German nimm meaning "take", or the obsolete English verb nim of the same meaning. It should also be noted that rotating the word NIM by 180 degrees results in WIN (see Ambigram).
+Nim is usually played as a misère game,[citation needed] in which the player to take the last object loses. Nim can also be played as a normal play game, which means that the person who makes the last move (i.e., who takes the last object) wins. This is called normal play because most games follow this convention, even though Nim usually does not.
+Normal play Nim (or more precisely the system of nimbers) is fundamental to the Sprague-Grundy theorem, which essentially says that in normal play every impartial game is equivalent to a Nim heap that yields the same outcome when played in parallel with other normal play impartial games (see disjunctive sum).
+While all normal play impartial games can be assigned a nim value, that is not the case under the misère convention. Only tame games can be played using the same strategy as misère nim.
+
+A normal play game may start with heaps of 3, 4 and 5 objects:
+
+In order to win always leave an even total number of 1's, 2's, and 4's.
+
+Sizes of heaps  Moves\\
+A B C\\
+ 
+3 4 5           Player 1 takes 2 from A\\
+1 4 5           Player 2 takes 3 from C\\
+1 4 2           Player 1 takes 1 from B\\
+1 3 2           Player 2 takes 1 from B\\
+1 2 2           Player 1 takes entire A heap, leaving two 2s.\\
+0 2 2           Player 2 takes 1 from B\\
+0 1 2           Player 1 takes 1 from C leaving two 1s. (In misère play I would take 2 from C leaving (0, 1, 0).)\\
+0 1 1           Player 2 takes 1 from B\\
+0 0 1           Player 1 takes entire C heap and wins.\\
+
+Mathematical theory
+
+Nim has been mathematically solved for any number of initial heaps and objects; that is, there is an easily calculated way to determine which player will win and what winning moves are open to that player. In a game that starts with heaps of 3, 4, and 5, the first player will win with optimal play, whether the misère or normal play convention is followed.
+The key to the theory of the game is the binary digital sum of the heap sizes, that is, the sum (in binary) neglecting all carries from one digit to another. This operation is also known as "exclusive or" (xor) or "vector addition over GF(2)". Within combinatorial game theory it is usually called the nim-sum, as will be done here. The nim-sum of x and y is written x * y to distinguish it from the ordinary sum, x + y. An example of the calculation with heaps of size 3, 4, and 5 is as follows:
+
+Binary  Decimal\\
+ 
+  0112    310    Heap A\\
+  1002    410    Heap B\\
+  1012    510    Heap C\\
+  ---\\
+  0102    210    The nim-sum of heaps A, B, and C, 3 * 4 * 5 = 2\\
+
+An equivalent procedure, which is often easier to perform mentally, is to express the heap sizes as sums of distinct powers of 2, cancel pairs of equal powers, and then add what's left:
+
+3 = 0 + 2 + 1 =     2   1      Heap A\\
+4 = 4 + 0 + 0 = 4              Heap B\\
+5 = 4 + 0 + 1 = 4       1      Heap C\\
+---\\
+2 =                 2          What's left after canceling 1s and 4s\\
+
+In normal play, the winning strategy is to finish every move with a Nim-sum of 0. This is always possible if the Nim-sum is not zero before the move. If the Nim-sum is zero, then the next player will lose if the other player does not make a mistake. To find out which move to make, let X be the Nim-sum of all the heap sizes. Take the Nim-sum of each of the heap sizes with X, and find a heap whose size decreases. The winning strategy is to play in such a heap, reducing that heap to the Nim-sum of its original size with X. In the example above, taking the Nim-sum of the sizes is X = 3 * 4 * 5 = 2. The Nim-sums of the heap sizes A=3, B=4, and C=5 with X=2 are
+(* representa xor)
+A * X = 3 * 2 = 1 [Since (011) * (010) = 001 ]\\
+B * X = 4 * 2 = 6\\
+C * X = 5 * 2 = 7\\
+The only heap that is reduced is heap A, so the winning move is to reduce the size of heap A to 1 (by removing two objects).
+As a particular simple case, if there are only two heaps left, the strategy is to reduce the number of objects in the bigger heap to make the heaps equal. After that, no matter what move your opponent makes, you can make the same move on the other heap, guaranteeing that you take the last object.
+When played as a misère game, Nim strategy is different only when the normal play move would leave no heap of size 2 or larger. In that case, the correct move is to leave an odd number of heaps of size 1 (in normal play, the correct move would be to leave an even number of such heaps).
+In a misère game with heaps of sizes 3, 4 and 5, the strategy would be applied like this:
+
+A B C Nim-sum\\
+ 
+3 4 5 0102=210   I take 2 from A, leaving a sum of 000, so I will win.\\
+1 4 5 0002=010   You take 2 from C\\
+1 4 3 1102=610   I take 2 from B\\
+1 2 3 0002=010   You take 1 from C\\
+1 2 2 0012=110   I take 1 from A\\
+0 2 2 0002=010   You take 1 from C\\
+0 2 1 0112=310   The normal play strategy would be to take 1 from B, leaving an even number (2)\\
+                 heaps of size 1.  For misère play, I take the entire B heap, to leave an odd\\
+                 number (1) of heaps of size 1.\\
+0 0 1 0012=110   You take 1 from C, and lose.\\
+
+\end{comment}
+
+\subsection{Sudoku}
+
+\codigofuente{src/misc/sudoku.cpp}
+
+\codigofuente{src/misc/sudokuE.cpp}
+
+\subsection{Gaussian elimination}
+
+\codigofuente{src/misc/gaussian.cpp}
+
+\subsection{Catalan numbers}
+
+In combinatorial mathematics, the Catalan numbers form a sequence of natural numbers that occur in various counting problems, often involving recursively defined objects. They are named after the Belgian mathematician Eugène Charles Catalan (1814–1894).
+
+The Nth catalan number is given by:
+
+$$C_n = {2n\choose n} - {2n\choose n+1} \quad\text{ for }n\ge 0$$
+
+Cn is the number of Dyck words of length 2n. A Dyck word is a string consisting of n X's and n Y's such that no initial segment of the string has more Y's than X's (see also Dyck language). For example, the following are the Dyck words of length 6:
+
+$$XXXYYY \;\;\;   XYXXYY  \;\;\;  XYXYXY  \;\;\;  XXYYXY   \;\;\;  XXYXYY$$.
+
+Re-interpreting the symbol X as an open parenthesis and Y as a close parenthesis, Cn counts the number of expressions containing n pairs of parentheses which are correctly matched:
+
+$$((()))   \;\;\;  ()(())    \;\;\; ()()()   \;\;\;  (())()   \;\;\;  (()())$$
+
+Cn is the number of different ways n + 1 factors can be completely parenthesized (or the number of ways of associating n applications of a binary operator).
+
+Successive applications of a binary operator can be represented in terms of a full binary tree. (A rooted binary tree is full if every vertex has either two children or no children.) It follows that Cn is the number of full binary trees with n + 1 leaves.
+
+If the leaves are labelled, we have the quadruple factorial numbers.
+
+Cn is the number of non-isomorphic ordered trees with n+1 vertices. (An ordered tree is a rooted tree in which the children of each vertex are given a fixed left-to-right order.)
+
+Cn is the number of monotonic paths along the edges of a grid with n x n square cells, which do not pass above the diagonal. A monotonic path is one which starts in the lower left corner, finishes in the upper right corner, and consists entirely of edges pointing rightwards or upwards. Counting such paths is equivalent to counting Dyck words: X stands for move right and Y stands for move up.
+
+Cn is the number of different ways a convex polygon with n + 2 sides can be cut into triangles by connecting vertices with straight lines.
+
+Cn is the number of stack-sortable permutations of {1, ..., n}. A permutation w is called stack-sortable if S(w) = (1, ..., n), where S(w) is defined recursively as follows: write w = unv where n is the largest element in w and u and v are shorter sequences, and set S(w) = S(u)S(v)n, with S being the identity for one-element sequences. These are the permutations that avoid the pattern 231.
+
+Cn is the number of permutations of {1, ..., n} that avoid the pattern 123 (or any of the other patterns of length 3); that is, the number of permutations with no three-term increasing subsequence. For n = 3, these permutations are 132, 213, 231, 312 and 321. For n = 4, they are 1432, 2143, 2413, 2431, 3142, 3214, 3241, 3412, 3421, 4132, 4213, 4231, 4312 and 4321.
+
+Cn is the number of noncrossing partitions of the set {1, ..., n}. A fortiori, Cn never exceeds the nth Bell number. Cn is also the number of noncrossing partitions of the set {1, ..., 2n} in which every block is of size 2. The conjunction of these two facts may be used in a proof by mathematical induction that all of the free cumulants of degree more than 2 of the Wigner semicircle law are zero. This law is important in free probability theory and the theory of random matrices.
+
+Cn is the number of ways to tile a stairstep shape of height n with n rectangles.
+
+Cn is the number of standard Young tableaux whose diagram is a 2-by-n rectangle. In other words, it is the number ways the numbers 1, 2, ..., 2n can be arranged in a 2-by-n rectangle so that each row and each column is increasing. As such, the formula can be derived as a special case of the hook-length formula.
+
+Cn is the number of ways that the vertices of a convex 2n-gon can be paired so that the line segments joining paired vertices do not intersect.
+
+Cn is the number of semiorders on n unlabeled items.
+
+\subsection{Bell numbers}
+
+In combinatorics, the nth Bell number, named after Eric Temple Bell, is the number of partitions of a set with n members, or equivalently, the number of equivalence relations on it. Starting with B0 = B1 = 1, the first few Bell numbers are:
+
+1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975
+
+The Bell numbers satisfy this recursion formula:
+
+$$B_{n+1}=\sum_{k=0}^{n}{{n \choose k}B_k}.$$
+
+%\subsection{Polinomios}
+
+\%codigofuente{src/misc/polynomials.cpp}
+
+\subsection{Subconjuntos}
+
+El siguiente codigo genera todos los subconjuntos de una mascara de bits (dado por el entero i) en tiempo lineal en el numero de subconjuntos.
+
+\codigofuente{src/misc/subconjuntos.cpp}
+
+\subsection{Combinations and permutations}
+
+\codigofuente{src/misc/combiperm.cpp}
+
+\subsection{Rationals}
+
+La siguiente clase implementa numeros racionales y evita overflow lo maximo posible. De ser necesario se puede cambiar el numerador y denominador por longs o BigIntegers facilmente.
+
+\codigofuente{src/misc/rationals.cpp}
+
+\subsection{Fibonnacci numbers}
+
+In mathematics, the Fibonacci numbers or Fibonacci series or Fibonacci sequence are the numbers in the following integer sequence:\\
+
+$0,\;1,\;1,\;2,\;3,\;5,\;8,\;13,\;21,\;34,\;55,\;89,\;144,\; \ldots\;$\\
+
+In mathematical terms, the sequence Fn of Fibonacci numbers is defined by the recurrence relation:\\
+
+$F_n = F_{n-1} + F_{n-2},\!\,$\\
+
+with seed values:\\
+
+$F_0 = 0,\; F_1 = 1.$\\
+
+The Fibonacci numbers can be found in different ways in the sequence of binary strings:\\
+
+The number of binary strings of length n without consecutive 1s is the Fibonacci number Fn+2. For example, out of the 16 binary strings of length 4, there are F6 = 8 without consecutive 1s – they are 0000, 0100, 0010, 0001, 0101, 1000, 1010 and 1001. By symmetry, the number of strings of length n without consecutive 0s is also Fn+2.\\
+
+The number of binary strings of length n without an odd number of consecutive 1s is the Fibonacci number Fn+1. For example, out of the 16 binary strings of length 4, there are F5 = 5 without an odd number of consecutive 1s – they are 0000, 0011, 0110, 1100, 1111.\\
+
+
+The number of binary strings of length n without an even number of consecutive 0s or 1s is 2Fn. For example, out of the 16 binary strings of length 4, there are 2F4 = 6 without an even number of consecutive 0s or 1s – they are 0001, 1000, 1110, 0111, 0101, 1010.\\
+
+
+Like every sequence defined by a linear recurrence with constant coefficients, the Fibonacci numbers have a closed-form solution:\\
+
+
+$F_n = \frac{\varphi^n-\psi^n}{\varphi-\psi} = \frac{\varphi^n-\psi^n}{\sqrt 5}$\\
+
+
+where:\\
+
+
+$\varphi = \frac{1 + \sqrt{5}}{2} \approx 1.61803\,39887\cdots\,$\\
+
+
+Therefore it can be found by rounding, or in terms of the floor function:\\
+
+
+$F_n=\bigg\lfloor\frac{\varphi^n}{\sqrt 5} + \frac{1}{2}\bigg\rfloor,\ n \geq 0.$\\
+
+
+A 2-dimensional system of linear difference equations that describes the Fibonacci sequence is:\\
+
+
+${F_{k+2} \choose F_{k+1}} = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} {F_{k+1} \choose F_{k}}$\\
+
+$\vec F_{k+1} = A \vec F_{k}$\\
+
+
+Z is a Fibonacci number if and only if the closed interval:\\
+
+
+$\bigg[\varphi z-\frac{1}{z},\varphi z+\frac{1}{z}\bigg]$\\
+
+
+contains a positive integer.\\
+
+
+Other identities:\\
+
+
+$F_{n} = F_{n-1} + F_{n-2},$\\
+
+$\sum_{i=1}^n F_i = F_{n+2} - 1$\\
+
+$F_n^2 - F_{n+r}F_{n-r} = (-1)^{n-r}F_r^2$\\
+
+$F_n^2 - F_{n+1}F_{n-1} = (-1)^{n-1}$\\
+
+$F_m F_{n+1} - F_{m+1} F_n = (-1)^n F_{m-n}$\\
+
+$F_{3n} = 2F_n^3 + 3F_n F_{n+1} F_{n-1} = 5F_n^3 + 3 (-1)^n F_n \,$\\
+
+$F_{3n+1} = F_{n+1}^3 + 3 F_{n+1}F_n^2 - F_n^3 \,$\\
+
+$F_{3n+2} = F_{n+1}^3 + 3 F_{n+1}^2F_n + F_n^3 \,$\\
+
+$F_{4n} = 4F_nF_{n+1}(F_{n+1}^2 + 2F_n^2) - 3F_n^2(F_n^2 + 2F_{n+1}^2) \,$\\
+
+$\gcd(F_m,F_n) = F_{\gcd(m,n)}\,$\\
+
+The periodo of the fibonnacci numbers modulo n is less than or equal to 6n.\\
+
+To calculate fib:\\\\
+
+${\begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}}^{n} = \begin{pmatrix} F_{n+1} & F_{n} \\ F_{n} & F_{n-1} \end{pmatrix}$
+
+\end{document}
